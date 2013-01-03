@@ -5,7 +5,7 @@ var ref = 0; // counter to track reference number
 
 var  subject = "<" + window.location.href + ">"  ;   // citing research article
 var predicatePrefix = "http://purl.org/spar/cito/";
-var extensionid = "";
+var extensionid = "O7WRSFR9ABNOWYFMHRFT4RXLF";
 
 var desc = desc(); // array of descriptions for CiTO
 var predicate = predicate(); // value for CiTO predicate URI
@@ -94,8 +94,8 @@ for (var g = 0; g < annotate.length; g++) {
 
 			 var postData = {url: url, triple: triple};
 			
-			// console.log(postData);
-			// console.log(url);
+			 console.log(postData);
+			 console.log(url);
 			 
 			 $.ajax({
 				    type: 'POST',
