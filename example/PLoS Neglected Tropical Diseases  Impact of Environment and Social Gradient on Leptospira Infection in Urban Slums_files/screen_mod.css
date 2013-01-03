@@ -1,0 +1,44 @@
+body 		{ font: 82.5% Verdana, Arial, Helvetica, sans-serif; color: #303030; margin: 30px;}
+a:link		{ color: #060; text-decoration: underline; }
+a:visited 	{ color: #005400; }
+a:hover		{ color: #0c0; text-decoration: none;}
+a:active	{ }
+img			{ border: 0; }
+strong		{ font-weight: bold; }
+h1 sup		{ font-size: .75em; }
+
+/* Default Headings */
+h1, h2, h3, h4	{ font-family: Georgia, "Times New Roman", Times, serif; color: #333; }
+h1			{ font-size: 2.2em; font-weight: normal; line-height:1.1em; color: #333;}
+h2			{ font-size: 1.6em; font-weight: normal; border-bottom: 1px solid #ccc; padding: 2px 0;}
+h3			{ font-size: 1.4em; font-weight: normal; margin: .8em 0; }
+h4			{ font-size: 1.2em; }
+h5			{ font-size: 1em; }
+h6			{ font-size: .9em; }
+
+
+div#contentHeader { /* open access image */ position: relative; top:0; margin:0; background:#67a96d; padding:6px}
+div#contentHeader p { margin: 0; padding:0px;}
+div#contentHeader p#articleType { text-transform:uppercase; text-indent:7px; font-weight:bold; color:#fff; background-color:transparent; }
+div#contentHeader p#articleType a { text-transform:uppercase; text-indent:7px; font-weight:bold; color:#fff; background-color:transparent; }
+
+p.authors		{ margin: 10px 0 0 0; font-weight: bold; font-size: 1.1em; }
+p.affiliations	{ font-size: .85em; margin: 0; }
+div.abstract	{ margin: 15px 0; }
+
+
+div.articleinfo	{ font-size: .8em; padding: 10px;  margin: 10px 0; background: #DBDBDB url(http://www.plosntds.org/images/abstract_bg.gif) repeat-x top; }
+div.articleinfo p{ margin: 0 0 1em 0; }
+
+
+
+
+div.figure				{ background-color: #edffe8; padding: 10px; font-size: .85em; margin: 10px 0;}
+div.figure:after		{ content: ".";  display: block;  height: 0; clear: both; visibility: hidden; }
+div.figure h5			{ float:none; margin: 0; color: #000;}
+div.figure p			{ margin: 5px 0; }
+div.figure img.thumbnail	{ margin: 0 10px 10px 0; float: left;}
+
+
+
+
