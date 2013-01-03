@@ -1,0 +1,16 @@
+This example demonstrates the utility of a CiTO javascript function, that allows creation of CiTO RDF triples in a research article's reference list, and submission of these triples to an external database that collates triples from all users.
+
+The CiTO javascript files have been included in the code as follows:
+
+<script  type="text/javascript" src="../javascript/cito.js"></script>
+<link rel="stylesheet" type="text/css" href="../javascript/cito.css">
+<script language="JavaScript" type="text/javascript" src="../javascript/jquery.min.js"></script>
+
+
+Additionally, the <body> HTML tag has been modified as follows:
+
+<body onload='cito()'>
+
+This modification will call the cito() function to modify the HTML in the page.
+
+ 
