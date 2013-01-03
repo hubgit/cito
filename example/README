@@ -13,4 +13,4 @@ Additionally, the <body> HTML tag has been modified as follows:
 
 This modification will call the cito() function to modify the HTML in the page.
 
- 
+The run this example locally, download the example and javascript folders to the same directory, and open the "PLoS Neglected Tropical Diseases  Impact of Environment and Social Gradient on Leptospira Infection in Urban Slums.html" file in a web browser.
