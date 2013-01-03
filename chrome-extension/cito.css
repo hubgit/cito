@@ -73,7 +73,7 @@ span.tag strong {line-height:30px;}
 span.tag:hover {text-decoration:none;} 
 span.tag span {
     z-index:10;display:none; padding:14px 20px;
-    margin-top:-30px; margin-left:28px;
+    margin-top:-30px; margin-left:100px;
     width:240px; line-height:16px;
 }
 span.tag:hover span{
