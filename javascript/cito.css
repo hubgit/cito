@@ -23,7 +23,7 @@ background-color:whitesmoke;
 font-size:11px;
 padding:0px;
 margin:1px !important;
-width:150px;
+width:100%;
 text-align:center;
 
 
@@ -46,7 +46,7 @@ font-size:11px;
 padding:0px;
 margin:1px !important;
 cursor:pointer;
-width:150px;
+width:100%;
 text-align:center;
 	
 }
@@ -60,7 +60,7 @@ text-align:center;
 
 div.annotate {
 	
-width:500px !important;
+width:100% !important;
 margin:1px;
 height:auto;
 background-color:#dddddd;

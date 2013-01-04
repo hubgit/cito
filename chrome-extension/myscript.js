@@ -3,10 +3,9 @@
 var cnt = 0; // counter used to assign unique id to each CiTO term span tag
 var ref = 0; // counter to track reference number
 
-var  subject = "<" + window.location.href + ">"  ;   // citing research article
+var url = window.location.href;
+var  subject = "<" + url + ">"  ;   // citing research article
 var predicatePrefix = "http://purl.org/spar/cito/";
-
-
 var desc = desc(); // array of descriptions for CiTO
 var predicate = predicate(); // value for CiTO predicate URI
 var arrCITO = arrCITO();
@@ -18,87 +17,62 @@ var html1 = "<div class='cito-annotate'>" +
 "</span> " +
 "<table style='margin:0px;'><tr>";
 
-var referenceList = document.getElementById("reference-list");
-// iterate through div tags in page
-var div=referenceList.getElementsByTagName("div");
-for (var y = 0; y < div.length; y++){
-	
-	 if((div[y].getAttribute('class') == 'ref-cit-blk half_rhythm')|| (div[y].getAttribute('class') == 'ref-cit-blk')){   // if the div contains a reference as identified by class value - insert html
-		 var html = html1;
-		 ref += 1; // increment counter
-		 html += spanCITO(arrCITO, div[y]); // add CiTO terms
-		 html += "</tr></table>";
-		 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span ckass='refTitle'>Other Reasons</span>" +
-		 		"<table><tr>"; // alternative reasons
-		 html += spanCITO(arrCITOother, div[y]); // add CiTO for other reasons
-		 html += "</tr></table>" +
-		 		"</div></div>";
-    	div[y].innerHTML +=  html;
- 
-    } 
+
+if (url.match(/elifesciences/) != null) {			
+	addHTML4elife();	
 }
 
-
-var l = referenceList.getElementsByTagName("li");
-for (var z = 0; z < l.length; z++){
-	
-		 var html = html1;
-		 ref += 1; // increment counter
-		 html += spanCITO(arrCITO, l[z]); // add CiTO terms
-		 html += "</tr></table>";
-		 html += "<div id='otherReasons" + ref +"' class='otherReasons'><h2>Other Reasons</h2>" +
-		 		"<table style='margin:0px;'><tr>"; // alternative reasons
-		 html += spanCITO(arrCITOother, l[z]); // add CiTO for other reasons
-		 html += "</tr></table>" +
-		 		"</div></div>";
-		 
-    	l[z].innerHTML +=  html;
- 
-		
-		 /*
-		 var newNode = document.createElement('li');
-		  newNode.innerHTML = html;
-		 
-		 l[z].parentNode.insertBefore(newNode, l[z].nextSibling);
-		 
-		 */
-		 
+else if (url.match(/www.ncbi\.nlm\.nih\.gov\/pmc/) != null) {
+	addHTML4pubmed();		
 }
+else if (url.match(/europepmc\.org/) != null) {
+	addHTML4pubmed();	
+}
+	
+addEventListeners();
 
 
-// add eventlistener - onclick to save value to external file
-var annotate = document.getElementsByClassName("cito-annotate");
 
 
-for (var g = 0; g < annotate.length; g++) {
-	var span = annotate[g].getElementsByTagName("span");
-	for (var j = 0; j < span.length; j++) {
-		
-		if (span[j].getAttribute('id') != 'otherreason'){
-		span[j].addEventListener("click", function() {
-			var title = this.getAttribute('desc');
-			var date = new Date();
-			 date = date.toUTCString()
+
+
+function addEventListeners(){
+	
+
+	// add eventlistener - onclick to save value to external file
+	var annotate = document.getElementsByClassName("cito-annotate");
+
+
+	for (var g = 0; g < annotate.length; g++) {
+		var span = annotate[g].getElementsByTagName("span");
+		for (var j = 0; j < span.length; j++) {
 			
+			if (span[j].getAttribute('id') != 'otherreason'){
+			span[j].addEventListener("click", function() {
+				var title = this.getAttribute('desc');
+				var date = new Date();
+				 date = date.toUTCString()
+				
 
-			if (this.getAttribute('class') == 'tag'){
-			var action = 'remove';	
-				save(this.getAttribute('id') , '0');
-			} else {
-				var action = "add";	
-				save(this.getAttribute('id') , '1');
+				if (this.getAttribute('class') == 'tag'){
+				var action = 'remove';	
+					save(this.getAttribute('id') , '0');
+				} else {
+					var action = "add";	
+					save(this.getAttribute('id') , '1');
+				}
+				
+				var value2send = date + "|" + action + "|" + title;
+
+				chrome.extension.sendMessage({value: value2send}, function(response) {
+					// console.log(response.reply); 
+					});
+			});
 			}
-			
-			var value2send = date + "|" + action + "|" + title;
+			}}
 
-			chrome.extension.sendMessage({value: value2send}, function(response) {
-				// console.log(response.reply); 
-				});
-		});
-		}
-		}}
-
-
+	
+}
 
 	 
 
@@ -176,28 +150,169 @@ function spanCITO(arrCITO, obj){
 }
 
 
-function getObject(div){
+function getObject(obj){
 	
 	 // retrieve url or text citation for reference being cited
 	 
+	if (url.match(/elife\.elifesciences\.org/) != null) {	
+		var object = getObject4elife(obj);	
+	}
+
+	else if (url.match(/www.ncbi\.nlm\.nih\.gov\/pmc/) != null) {
+var object =		getObject4pubmed(obj);		
+	}
+	else if (url.match(/europepmc\.org/) != null) {
+	var object =	getObject4pubmed(obj);	
+	}
+	
+	return object;
+	
+	
+	
+}
+
+
+function getObject4elife(el){
+	 // retrieve url or text citation for reference being cited
+	 
 	/*
-	 * 
-	 * <div class="ref-cit-blk half_rhythm" id="r27">27. 
-	 * <span>Field D, Garrity G, Gray T, Morrison N, Selengut J, Sterk P, Tatusova T, Thomson N, Allen MJ, Angiuoli SV, et al. 
-<span class="ref-title">The minimum information about a genome sequence (MIGS) specification.</span>
-<span class="ref-journal">Nat Biotechnol</span>
-2008; <span class="ref-vol">26</span>:541-547. doi: 10.1038/nbt1360. 
-<span class="nowrap ref pmc">[<a class="int-reflink" href="/pmc/articles/PMC2409278/">PMC free article</a>]</span> 
- <span class="nowrap ref pubmed">[<a href="/pubmed/18464787" target="pmc_ext" onclick="focuswin('pmc_ext')" ref="reftype=pubmed&amp;article-id=3387791&amp;issue-id=211734&amp;journal-id=1427&amp;FROM=Article%7CCitationRef&amp;TO=Entrez%7CPubMed%7CRecord&amp;rendering-type=normal">PubMed</a>]</span> 
- <span class="nowrap ref crossref">[<a href="http://dx.doi.org/10.1038%2Fnbt1360" target="pmc_ext" onclick="focuswin('pmc_ext')" ref="reftype=other&amp;article-id=3387791&amp;issue-id=211734&amp;journal-id=1427&amp;FROM=Article%7CCitationRef&amp;TO=Content%20Provider%7CCrosslink%7CDOI&amp;rendering-type=normal"> Cross Ref</a>]</span>
-  </span>
-  </div>
+	 * <article
+	class="elife-reflinks-reflink" id="ref-1" data-original="1"
+	data-author="ando, r"
+	data-title="highlighted generation of fluorescence signals using simultaneous two-color irradiation on dronpmutants"
+	data-date="2007" data-cited="1">
+<div class="elife-reflink-indicators">
+<div class="elife-reflink-indicators-left">
+<div class="elife-reflink-indicator-number"><span data-counter="1">1</span></div>
+<div class="elife-reflink-indicator-cm"><a href="#"></a></div>
+</div>
+<div class="elife-reflink-indicators-right">
+<div class="elife-reflink-indicator-elife"></div>
+<div class="elife-reflink-indicator-oa"></div>
+</div>
+</div>
+<div class="elife-reflink-main"><cite class="elife-reflink-title"><a
+	href="/lookup/external-ref/doi?access_num=10.1529/biophysj.107.105882&amp;link_type=DOI"
+	target="_blank"><span class="nlm-article-title">Highlighted
+generation of fluorescence signals using simultaneous two-color
+irradiation on Dronpa mutants</span></a></cite>
+<div class="elife-reflink-authors"><span
+	class="elife-reflink-author">R Ando</span>, <span
+	class="elife-reflink-author">C Flors</span>, <span
+	class="elife-reflink-author">H Mizuno</span>, <span
+	class="elife-reflink-author">J Hofkens</span>, <span
+	class="elife-reflink-author">A Miyawaki</span></div>
+<div class="elife-reflink-details"><span
+	class="elife-reflink-details-journal"><span class="nlm-source">Biophys
+J</span></span>, <span class="elife-reflink-details-volume">92</span>, <span
+	class="elife-reflink-details-pages">L97-9</span>, <span
+	class="elife-reflink-details-year">2007</span>
+<div class="elife-reflink-doi-cited-wrapper"><span
+	class="elife-reflink-details-doi"><a
+	href="http://dx.doi.org/10.1529/biophysj.107.105882">http://dx.doi.org/10.1529/biophysj.107.105882</a></span>
+— <span class="elife-reflink-details-cited">cited 1 time in paper</span></div>
+<div class="elife-reflink-links-wrapper"><span
+	class="elife-reflink-link life-reflink-link-doi"><a
+	href="/lookup/external-ref/doi?access_num=10.1529/biophysj.107.105882&amp;link_type=DOI"
+	target="_blank">CrossRef</a></span><span
+	class="elife-reflink-link life-reflink-link-medline"><a
+	href="/lookup/external-ref/medline?access_num=17384059&amp;link_type=MED"
+	target="_blank">PubMed</a></span><span
+	class="elife-reflink-link life-reflink-link-newisilink"><a
+	href="/lookup/external-ref/newisilink?access_num=000246811700001&amp;link_type=ISI"
+	target="_blank">Web of science</a></span></div>
+</div>
+</div>
+</article>
 	 * 
 	 * 
 	 * 
 	 * 
 	*/
 	
+	
+	
+	
+	var regexDOImatch = /class="elife-reflink-details-doi"><a.*href="http:\/\/dx\.doi\.org.*"\s*target="_blank"\s*>http:\/\/dx\.doi\.org/;
+	var regexDOIreplace = /class="elife-reflink-details-doi"><a.*href="|".*>.*/g;
+	
+	
+	//<a href="/lookup/external-ref/medline?access_num=22301313&amp;link_type=MED" target="_blank">PubMed</a>
+	var regexPUBMEDmatch = /elife-reflink-link life-reflink-link-medline">.*PubMed<\/a>/;
+	var regexPUBMEDreplace = /.*access_num=|\&.*/g;
+	
+	
+	var regexCROSSREFmatch = /\/lookup\/external-ref\/doi\?access_num=.*>CrossRef<\/a>/;
+	var regexCROSSREFreplace = /.*access_num=|\&.*/g;
+
+	//var regexWOSmatch = /<a href="\/lookup\/external-ref\/newisilink?access_num=.*&.*>Web of science<\/a>/;
+	//var regexWOSreplace = /<a href="\/lookup\/external-ref\/newisilink?access_num=|&.*>Web of science<\/a>/;
+	
+	//var regexHIGHWIREmatch = /<a href="\/lookup\/external-ref\/medline\?access_num=17384059&.*>PubMed<\/a>/;
+	//var regexHIGHWIREreplace = /<a href="\/lookup\/external-ref\/medline\?access_num=|&.*>PubMed<\/a>/;
+	
+//	var regexTEXTmatch = /<a href="\/lookup\/external-ref\/medline\?access_num=17384059&.*>PubMed<\/a>/;
+//	var regexTEXTreplace = /<a href="\/lookup\/external-ref\/medline\?access_num=|&.*>PubMed<\/a>/;
+	
+	
+	
+	var citedDoc = el.innerHTML;
+
+	
+	 
+	 if (citedDoc.match(regexDOImatch) != null){
+		
+		 var obj = citedDoc.match(regexDOImatch) + "";
+		 
+		 // extract identifier from  link
+		 var obj = obj.replace(regexDOIreplace, "");
+		 var obj = "<" + obj + "> ";
+		
+		 
+	 }
+	 
+	 else if (citedDoc.match(regexPUBMEDmatch) != null){
+		 var obj = citedDoc.match(regexPUBMEDmatch) + "";
+		 
+		
+		 var obj = obj.replace(regexPUBMEDreplace, "");
+		 var obj = "<http://www.ncbi.nlm.nih.gov/pubmed?term=" + obj + "%5Buid%5D> ";
+		
+	 }
+	 
+	else if (citedDoc.match(regexCROSSREFmatch) != null){
+		 var obj = citedDoc.match(regexCROSSREFmatch) + "";
+		 
+		 
+		 var obj = obj.replace(regexCROSSREFreplace, "");
+		 var obj = "<http://dx.doi.org/" + obj + "> ";
+		 
+	 }
+	 
+	 
+	 else {
+		 
+		
+		 if (el.innerText){
+			 	var obj =  el.innerText  ;
+				var obj =  obj.replace(/^\d*|cited .*/g, "") ;
+				var obj = obj.replace(/^\n*|\n*$/g, "") ;
+				var obj = '"'  + obj.replace(/\n/g, " ") + '"';
+				
+		 } else {
+			 	var obj = '""'; 
+		 }
+	 }
+	
+	return obj;
+	
+	
+}
+
+
+
+
+function getObject4pubmed(obj){
 	
 	 var object = "";
 	 var regexPUBMEDmatch = /<span class="nowrap ref pubmed">\[<a href=".*".*>PubMed<\/a>\]<\/span>/; //extract pubmed link
@@ -209,7 +324,7 @@ function getObject(div){
 	 var regexINDEXreplace = /^\s*\d*\.\s*/;
 	 
 	 
-	 var citedDoc = div.innerHTML;
+	 var citedDoc = obj.innerHTML;
 	 
 	 
 	 if (citedDoc.match(regexPUBMEDmatch) != null){
@@ -231,13 +346,14 @@ function getObject(div){
 	 
 	 else {
 		 
-		var object =  div.innerText  ;
+		var object =  obj.innerText  ;
 		
 		var object = '"'  + object.replace(regexINDEXreplace, "") + '"';
 		
 	 }
 	
 	return object;
+	
 	
 }
 
@@ -408,9 +524,10 @@ function predicate(){
 function arrCITO(){
 
 	var arrCITO = new Array(		
-		  new Array("cites as authority",  "cites for information",  "corrects",  "critiques"),
-		  new Array("discusses", "extends", "obtains background from",  "reviews"),
-		  new Array("updates", "uses data from",  "uses method in" , "OTHER REASON") 	
+		  new Array("cites as authority",  "cites for information",  "corrects"),
+		  new Array("critiques","discusses", "extends"),
+		  new Array("obtains background from",  "reviews","updates") ,
+		  new Array( "uses data from",  "uses method in" , "OTHER REASON") 
 	);
 return arrCITO;
 }
@@ -418,17 +535,94 @@ return arrCITO;
 function arrCITOother(){
 	
 	var arrCITOother = new Array(		
-			  new Array("agrees with", "cites as data source","cites as evidence", "cites as metadata document","cites as recommended reading","cites as related", "cites as source document","compiles",   "confirms"),
-			  new Array( "contains assertion from", "credits","derides",   "disagrees with", "disputes",   "documents","gives background to",   "gives support to",  "has reply"),
-			  new Array( "includes excerpt from",   "includes quotation from", "qualifies",   "refutes",   "replies to",   "retracts",  "ridicules",   "shares authors with",   "supports","uses conclusions from")
-		);
+			  new Array("agrees with", "cites as data source","cites as evidence", "cites as metadata document","cites as recommended reading","cites as related", "cites as source document"),
+			  new Array( "compiles",   "confirms","contains assertion from", "credits","derides",   "disagrees with", "disputes"),
+			  new Array( "documents","gives background to",   "gives support to",  "has reply","includes excerpt from",   "includes quotation from", "qualifies"),
+			  new Array( "refutes",   "replies to",   "retracts",  "ridicules",   "shares authors with",   "supports","uses conclusions from")	
+	);
 return arrCITOother;
 
 }
 
 
 
+function addHTML4pubmed(){
+	
+	var referenceList = document.getElementById("reference-list");
+	// iterate through div tags in page
+	var div=referenceList.getElementsByTagName("div");
+	for (var y = 0; y < div.length; y++){
+		
+		 if((div[y].getAttribute('class') == 'ref-cit-blk half_rhythm')|| (div[y].getAttribute('class') == 'ref-cit-blk')){   // if the div contains a reference as identified by class value - insert html
+			 var html = html1;
+			 ref += 1; // increment counter
+			 html += spanCITO(arrCITO, div[y]); // add CiTO terms
+			 html += "</tr></table>";
+			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span ckass='refTitle'>Other Reasons</span>" +
+			 		"<table><tr>"; // alternative reasons
+			 html += spanCITO(arrCITOother, div[y]); // add CiTO for other reasons
+			 html += "</tr></table>" +
+			 		"</div></div>";
+	    	div[y].innerHTML +=  html;
+	 
+	    } 
+	}
 
+
+	var l = referenceList.getElementsByTagName("li");
+	for (var z = 0; z < l.length; z++){
+		
+			 var html = html1;
+			 ref += 1; // increment counter
+			 html += spanCITO(arrCITO, l[z]); // add CiTO terms
+			 html += "</tr></table>";
+			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span class='refTitle'>Other Reasons</span>" +
+			 		"<table style='margin:0px;'><tr>"; // alternative reasons
+			 html += spanCITO(arrCITOother, l[z]); // add CiTO for other reasons
+			 html += "</tr></table>" +
+			 		"</div></div>";
+			 
+	    	l[z].innerHTML +=  html;
+	 
+			
+			
+			 
+	}
+
+	
+}
+
+
+function addHTML4elife(){
+	
+
+	
+
+
+	var referenceList = document.getElementById('references');
+
+	if (referenceList) {
+	// iterate through li tags in reference list
+	var el=referenceList.getElementsByTagName("article");
+
+	for (var y = 0; y < el.length; y++){
+		     var object = getObject(el[y]);
+			 var html = html1;
+			 ref += 1; // increment counter
+			 html += spanCITO(arrCITO, el[y], object); // add CiTO terms
+			 html += "</tr></table>";
+			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span class='refTitle'>Other Reasons</span>" +
+			 		"<table><tr>"; // alternative reasons
+			 html += spanCITO(arrCITOother, el[y], object); // add CiTO for other reasons
+			 html += "</tr></table>" +
+			 		"</div></div>";
+	    	el[y].innerHTML +=  html;
+	    	
+	}}
+
+	
+	
+}
 
 
 

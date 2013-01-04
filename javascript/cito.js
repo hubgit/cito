@@ -3,7 +3,13 @@
 var cnt = 0; // counter used to assign unique id to each CiTO term span tag
 var ref = 0; // counter to track reference number
 
-var  subject = "<" + window.location.href + ">"  ;   // citing research article
+
+var url = window.location.href;
+var  subject = "<" + url + ">"  ;   // citing research article
+
+var refType = "reis";
+
+
 var predicatePrefix = "http://purl.org/spar/cito/";
 var extensionid = "O7WRSFR9ABNOWYFMHRFT4RXLF";
 
@@ -13,9 +19,6 @@ var arrCITO = arrCITO();
 var arrCITOother = arrCITOother();
 
 
-function cito(){
-	
-	
 var html1 = "<div class='cito-annotate'>" +
 "<span class='refTitle'>Why does this article cite that reference? " +
 "<span class='refTitleHelp'>(Choose as many reasons as apply by clicking on them.)</span>" +
@@ -23,117 +26,210 @@ var html1 = "<div class='cito-annotate'>" +
 "<table><tr>";
 
 
-var referenceList = document.getElementById('references');
 
-if (referenceList) {
-// iterate through div tags in page
-var el=referenceList.getElementsByTagName("li");
-for (var y = 0; y < el.length; y++){
+function cito(){
 	
-		 var html = html1;
-		 ref += 1; // increment counter
-		 html += spanCITO(arrCITO, el[y]); // add CiTO terms
-		 html += "</tr></table>";
-		 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span class='refTitle'>Other Reasons</span>" +
-		 		"<table><tr>"; // alternative reasons
-		 html += spanCITO(arrCITOother, el[y]); // add CiTO for other reasons
-		 html += "</tr></table>" +
-		 		"</div></div>";
-    	el[y].innerHTML +=  html;
-    	
+	if (refType == 'elife') {			
+		addHTML4elife();	
+	}
+
+	else if (refType == 'pubmed') {
+		addHTML4pubmed();		
+	}
+	else if (refType == 'reis') {
+		addHTML4reis();	
+	}
+		
+	addEventListeners();	
+}
+
+
+
+
+
+
+
+function addHTML4reis(){
+	
+
+	var referenceList = document.getElementById('references');
+
+	if (referenceList) {
+	// iterate through li tags in reference list
+	var el=referenceList.getElementsByTagName("li");
+	for (var y = 0; y < el.length; y++){
+		
+			 var html = html1;
+			 ref += 1; // increment counter
+			 html += spanCITO(arrCITO, el[y]); // add CiTO terms
+			 html += "</tr></table>";
+			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span class='refTitle'>Other Reasons</span>" +
+			 		"<table><tr>"; // alternative reasons
+			 html += spanCITO(arrCITOother, el[y]); // add CiTO for other reasons
+			 html += "</tr></table>" +
+			 		"</div></div>";
+	    	el[y].innerHTML +=  html;
+	    	
+	}}
+	
+}
+
+
+function addHTML4pubmed(){
+	
+	var referenceList = document.getElementById("reference-list");
+	// iterate through div tags in page
+	var div=referenceList.getElementsByTagName("div");
+	for (var y = 0; y < div.length; y++){
+		
+		 if((div[y].getAttribute('class') == 'ref-cit-blk half_rhythm')|| (div[y].getAttribute('class') == 'ref-cit-blk')){   // if the div contains a reference as identified by class value - insert html
+			 var html = html1;
+			 ref += 1; // increment counter
+			 html += spanCITO(arrCITO, div[y]); // add CiTO terms
+			 html += "</tr></table>";
+			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span ckass='refTitle'>Other Reasons</span>" +
+			 		"<table><tr>"; // alternative reasons
+			 html += spanCITO(arrCITOother, div[y]); // add CiTO for other reasons
+			 html += "</tr></table>" +
+			 		"</div></div>";
+	    	div[y].innerHTML +=  html;
+	 
+	    } 
+	}
+
+
+	var l = referenceList.getElementsByTagName("li");
+	for (var z = 0; z < l.length; z++){
+		var object = getObject(el[y]);
+			 var html = html1;
+			 ref += 1; // increment counter
+			 html += spanCITO(arrCITO, l[z], object); // add CiTO terms
+			 html += "</tr></table>";
+			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span class='refTitle'>Other Reasons</span>" +
+			 		"<table style='margin:0px;'><tr>"; // alternative reasons
+			 html += spanCITO(arrCITOother, l[z], object); // add CiTO for other reasons
+			 html += "</tr></table>" +
+			 		"</div></div>";
+			 
+	    	l[z].innerHTML +=  html;
+	
 }}
 
 
+function addHTML4elife(){
+	
+	var referenceList = document.getElementById('references');
 
-// add eventlistener - onclick to save value to external file
-var annotate = document.getElementsByClassName("cito-annotate");
+	if (referenceList) {
+	// iterate through li tags in reference list
+	var el=referenceList.getElementsByTagName("article");
+
+	for (var y = 0; y < el.length; y++){
+		     var object = getObject(el[y]);
+			 var html = html1;
+			 ref += 1; // increment counter
+			 html += spanCITO(arrCITO, el[y], object); // add CiTO terms
+			 html += "</tr></table>";
+			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span class='refTitle'>Other Reasons</span>" +
+			 		"<table><tr>"; // alternative reasons
+			 html += spanCITO(arrCITOother, el[y], object); // add CiTO for other reasons
+			 html += "</tr></table>" +
+			 		"</div></div>";
+	    	el[y].innerHTML +=  html;
+	    	
+	}}
+	
+}
 
 
-for (var g = 0; g < annotate.length; g++) {
-	var span = annotate[g].getElementsByTagName("span");
-	for (var j = 0; j < span.length; j++) {
-		
-		if (span[j].getAttribute('id') != 'otherreason'){
-		span[j].addEventListener("click", function() {
-			var title = this.getAttribute('desc');
-			var date = new Date();
-			 date = date.toUTCString()
-			
 
-			if (this.getAttribute('class') == 'tag'){
-			var action = 'remove';	
-				save(this.getAttribute('id') , '0');
-			} else {
-				var action = "add";	
-				save(this.getAttribute('id') , '1');
-			}
-			
-			var value2send = date + "|" + action + "|" + title;
 
+
+function addEventListeners(){	
+
+	// add eventlistener - onclick to save value to external file
+	var annotate = document.getElementsByClassName("cito-annotate");
+
+	for (var g = 0; g < annotate.length; g++) {
+		var span = annotate[g].getElementsByTagName("span");
+		for (var j = 0; j < span.length; j++) {
 			
-		
-			var xhr = new XMLHttpRequest(); // supported by all modern browsers including Chrome, Opera, Safari, Firefox, IE7+ - not supported by IE 6 and earlier
-			
-			
-			// see if uniqid has been created for user
-			if (localStorage.getItem('uniqid') === null){
-				// if not, create unique id and store in local store
-				var uniqid = uniqueid();
-				localStorage.setItem('uniqid', uniqid);
+			if (span[j].getAttribute('id') != 'otherreason'){
+			span[j].addEventListener("click", function() {
+				var title = this.getAttribute('desc');
+				var date = new Date();
+				 date = date.toUTCString()
 				
+				if (this.getAttribute('class') == 'tag'){
+				var action = 'remove';	
+					save(this.getAttribute('id') , '0');
+				} else {
+					var action = "add";	
+					save(this.getAttribute('id') , '1');
+				}
 				
-			} else {
-				// if yes, retrieve value
-				var uniqid = localStorage.getItem('uniqid')	;
-			}
-			
+				var value2send = date + "|" + action + "|" + title;
+				var xhr = new XMLHttpRequest(); // supported by all modern browsers including Chrome, Opera, Safari, Firefox, IE7+ - not supported by IE 6 and earlier				
+				
+				// see if uniqid has been created for user
+				if (localStorage.getItem('uniqid') === null){
+					// if not, create unique id and store in local store
+					var uniqid = uniqueid();
+					localStorage.setItem('uniqid', uniqid);
+					
+					
+				} else {
+					// if yes, retrieve value
+					var uniqid = localStorage.getItem('uniqid')	;
+				}
+				
 
-			var url = "http://www.miidi.org/metaquery/listen.php";
-			var triple =  uniqid + "|" + value2send + "|" + extensionid ;
-			
+				var listen = "http://www.miidi.org/metaquery/listen.php";
+				var triple =  uniqid + "|" + value2send + "|" + extensionid ;
+				
 
-			 var postData = {url: url, triple: triple};
-			
-			 console.log(postData);
-			 console.log(url);
-			 
-			 $.ajax({
-				    type: 'POST',
-				    url: url,
-				    crossDomain: true,
-				    data: postData,
-				    dataType: 'json',
-				    success: function(responseData, textStatus, jqXHR) {
-				        console.log('success responseData:' + responseData + ' textstatus: ' + textStatus + 'jqXHR:' + jqXHR);
-				    },
-				    error: function (responseData, textStatus, errorThrown) {
-				        console.log('error responseData:' + responseData + ' errorThrown:' + errorThrown + 'textStatus:' + textStatus);
-				    }
-				});
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-		});
-		
-		
-		
-		
-			
-			
-			
-			
-		}
-		}}
+				 var postData = {url: url, triple: triple};
+				
+		//		 console.log(postData);
+		//		 console.log(url);
+				 
+				 $.ajax({
+					    type: 'POST',
+					    url: listen,
+					    crossDomain: true,
+					    data: postData,
+					    dataType: 'json',
+					    success: function(responseData, textStatus, jqXHR) {
+					        console.log('success responseData:' + responseData + ' textstatus: ' + textStatus + 'jqXHR:' + jqXHR);
+					    },
+					    error: function (responseData, textStatus, errorThrown) {
+					        console.log('error responseData:' + responseData + ' errorThrown:' + errorThrown + 'textStatus:' + textStatus);
+					    }
+					});
+			});	
+			}}}
 
 
 }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 	 
 
 function spanCITO(arrCITO, obj){
@@ -209,54 +305,35 @@ function spanCITO(arrCITO, obj){
 	return html;
 }
 
-
-function getObject(el){
+function getObject(obj){
 	
 	 // retrieve url or text citation for reference being cited
 	 
-	/*
-	 * <li id="ref1" class="ref citedfrequency4">
-	<table>
-		<tbody>
-			<tr>
-				<td>1.</td>
-				<td><a id="pntd.0000228-United1"></a><span class="authors">United
-				Nations Human Settlements Programme</span> (2003) The challenge of <span
-					class="habitat">slums</span>: Global report on human settlements <span
-					class="date">2003</span>. London: Earthscan Publications Ltd. <a
-					href="http://www.unhabitat.org/downloads/docs/GRHS.2003.0.pdf">Link</a>
-				<span class="citationtype">(CiTO: <span
-					class="cito_relationship"><i>obtains background from</i></span>, <span
-					class="cito_work"><i>Report</i></span>, <span
-					class="cito_expression"><i>Book</i></span>, <span
-					class="cito_manifestation"><i>Online Document</i></span>, <span
-					class="cito_status"><i>not peer reviewed</i></span>)</span></td>
-			</tr>
-		</tbody>
-	</table>
-	</li>
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	*/
+	if (refType =='elife') {	
+		var object = getObject4elife(obj);	
+	}
+
+	else if (refType == 'pubmed') {
+var object =		getObject4pubmed(obj);		
+	}
+	else if (refType == 'reis') {
+	var object = getObject4reis(obj);	
+	}
+	
+	return object;
 	
 	
 	
+}
+
+
+function getObject4reis(el){
 	
-	// var regexPUBMEDmatch = /<span class="nowrap ref pubmed">\[<a href=".*".*>PubMed<\/a>\]<\/span>/; 
-	// var regexPUBMEDreplace = /\<span class="nowrap ref pubmed">\[<a href="|".*>PubMed<\/a>\]<\/span>/g;  
-	 
-	// var regexPMCmatch = /<span class="nowrap ref pmc">\[<a class="int-reflink" href=".*">PMC free article<\/a>]<\/span>/ ; 
-	// var regexPMCreplace = /<span class="nowrap ref pmc">\[<a class="int-reflink" href="|">PMC free article<\/a>]<\/span>/g;
-	 
-	 var regexINDEXreplace = /^\s*\d*\.\s*/;
-	 
+	var regexINDEXreplace = /^\s*\d*\.\s*/;
 	var regexAHREFmatch = /<a.*href=".*">.*<\/a>/;
 	var regexAHREFreplace = /<a.*href="|">.*<\/a>/g;
 	var citedDoc = el.innerHTML;
-	 
+
 	 
 	 if (citedDoc.match(regexAHREFmatch) != null){
 		 //extractlink
@@ -280,7 +357,137 @@ function getObject(el){
 	
 	return obj;
 	
+	
 }
+
+
+function getObject4elife(el){
+	 // retrieve url or text citation for reference being cited	
+	
+	var regexDOImatch = /class="elife-reflink-details-doi"><a.*href="http:\/\/dx\.doi\.org.*"\s*target="_blank"\s*>http:\/\/dx\.doi\.org/;
+	var regexDOIreplace = /class="elife-reflink-details-doi"><a.*href="|".*>.*/g;
+	
+	
+	//<a href="/lookup/external-ref/medline?access_num=22301313&amp;link_type=MED" target="_blank">PubMed</a>
+	var regexPUBMEDmatch = /elife-reflink-link life-reflink-link-medline">.*PubMed<\/a>/;
+	var regexPUBMEDreplace = /.*access_num=|\&.*/g;
+	
+	
+	var regexCROSSREFmatch = /\/lookup\/external-ref\/doi\?access_num=.*>CrossRef<\/a>/;
+	var regexCROSSREFreplace = /.*access_num=|\&.*/g;
+
+	//var regexWOSmatch = /<a href="\/lookup\/external-ref\/newisilink?access_num=.*&.*>Web of science<\/a>/;
+	//var regexWOSreplace = /<a href="\/lookup\/external-ref\/newisilink?access_num=|&.*>Web of science<\/a>/;
+	
+	//var regexHIGHWIREmatch = /<a href="\/lookup\/external-ref\/medline\?access_num=17384059&.*>PubMed<\/a>/;
+	//var regexHIGHWIREreplace = /<a href="\/lookup\/external-ref\/medline\?access_num=|&.*>PubMed<\/a>/;
+	
+//	var regexTEXTmatch = /<a href="\/lookup\/external-ref\/medline\?access_num=17384059&.*>PubMed<\/a>/;
+//	var regexTEXTreplace = /<a href="\/lookup\/external-ref\/medline\?access_num=|&.*>PubMed<\/a>/;
+	
+	
+	
+	var citedDoc = el.innerHTML;
+
+	
+	 
+	 if (citedDoc.match(regexDOImatch) != null){
+		
+		 var obj = citedDoc.match(regexDOImatch) + "";
+		 
+		 // extract identifier from  link
+		 var obj = obj.replace(regexDOIreplace, "");
+		 var obj = "<" + obj + "> ";
+		
+		 
+	 }
+	 
+	 else if (citedDoc.match(regexPUBMEDmatch) != null){
+		 var obj = citedDoc.match(regexPUBMEDmatch) + "";
+		 
+		
+		 var obj = obj.replace(regexPUBMEDreplace, "");
+		 var obj = "<http://www.ncbi.nlm.nih.gov/pubmed?term=" + obj + "%5Buid%5D> ";
+		
+	 }
+	 
+	else if (citedDoc.match(regexCROSSREFmatch) != null){
+		 var obj = citedDoc.match(regexCROSSREFmatch) + "";
+		 
+		 
+		 var obj = obj.replace(regexCROSSREFreplace, "");
+		 var obj = "<http://dx.doi.org/" + obj + "> ";
+		 
+	 }
+	 
+	 
+	 else {
+		 
+		
+		 if (el.innerText){
+			 	var obj =  el.innerText  ;
+				var obj =  obj.replace(/^\d*|cited .*/g, "") ;
+				var obj = obj.replace(/^\n*|\n*$/g, "") ;
+				var obj = '"'  + obj.replace(/\n/g, " ") + '"';
+				
+		 } else {
+			 	var obj = '""'; 
+		 }
+	 }
+	
+	return obj;
+	
+	
+}
+
+
+
+
+function getObject4pubmed(obj){
+	
+	 var object = "";
+	 var regexPUBMEDmatch = /<span class="nowrap ref pubmed">\[<a href=".*".*>PubMed<\/a>\]<\/span>/; //extract pubmed link
+	 var regexPUBMEDreplace = /\<span class="nowrap ref pubmed">\[<a href="|".*>PubMed<\/a>\]<\/span>/g;  // extract identifier from pubmed link
+	 
+	 var regexPMCmatch = /<span class="nowrap ref pmc">\[<a class="int-reflink" href=".*">PMC free article<\/a>]<\/span>/ ; //
+	 var regexPMCreplace = /<span class="nowrap ref pmc">\[<a class="int-reflink" href="|">PMC free article<\/a>]<\/span>/g;
+	 
+	 var regexINDEXreplace = /^\s*\d*\.\s*/;
+	 
+	 
+	 var citedDoc = obj.innerHTML;
+	 
+	 
+	 if (citedDoc.match(regexPUBMEDmatch) != null){
+		 //extract pubmed link
+		 var object = citedDoc.match(regexPUBMEDmatch) + "";
+		 // extract identifier from pubmed link
+		 var object = object.replace(regexPUBMEDreplace, "");
+		 var object = "<http://www.ncbi.nlm.nih.gov" + object + "> ";
+		 
+		 
+	 }
+	 else if (citedDoc.match(regexPMCmatch) != null){
+	 
+		 var object = citedDoc.match(regexPMCmatch) + "";
+		 var object = object.replace(regexPMCreplace, "");
+		 var object = "<http://www.ncbi.nlm.nih.gov" + object + "> ";
+		 
+	 }
+	 
+	 else {
+		 
+		var object =  obj.innerText  ;
+		
+		var object = '"'  + object.replace(regexINDEXreplace, "") + '"';
+		
+	 }
+	
+	return object;
+	
+	
+}
+
 
 
 
