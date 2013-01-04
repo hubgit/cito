@@ -7,15 +7,11 @@ The CiTO javascript files have been included in the code as follows:
 <link rel="stylesheet" type="text/css" href="../javascript/cito.css">
 <script language="JavaScript" type="text/javascript" src="../javascript/jquery.min.js"></script>
 
-
 Additionally, the <body> HTML tag has been modified as follows:
-
 <body onload='cito()'>
-
 This modification will call the cito() function to modify the HTML in the page.
 
 To run this example locally, download the example and javascript folders to the same directory. In the javascript folder, modify line 10 to read:
-var refType = "reis";
+var refType = "elife";
 
-Open the 
-"PLoS Neglected Tropical Diseases  Impact of Environment and Social Gradient on Leptospira Infection in Urban Slums.html" file in a web browser.
+Open the "elife.html" file in a web browser.

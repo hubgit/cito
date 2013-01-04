@@ -9,13 +9,12 @@ The CiTO javascript files have been included in the code as follows:
 
 
 Additionally, the <body> HTML tag has been modified as follows:
-
 <body onload='cito()'>
 
 This modification will call the cito() function to modify the HTML in the page.
 
 To run this example locally, download the example and javascript folders to the same directory. In the javascript folder, modify line 10 to read:
-var refType = "reis";
+var refType = "pubmed";
 
 Open the 
-"PLoS Neglected Tropical Diseases  Impact of Environment and Social Gradient on Leptospira Infection in Urban Slums.html" file in a web browser.
+"Pathema  a clade-specific bioinformatics resource center for pathogen research.html" file in a web browser.
