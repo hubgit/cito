@@ -7,7 +7,7 @@ var ref = 0; // counter to track reference number
 var url = window.location.href;
 var  subject = "<" + url + ">"  ;   // citing research article
 
-var refType = "reis";
+var refType = "plos"; // possible values = reis, pubmed, elife,  plos 
 
 
 var predicatePrefix = "http://purl.org/spar/cito/";
@@ -23,7 +23,7 @@ var html1 = "<div class='cito-annotate'>" +
 "<span class='refTitle'>Why does this article cite that reference? " +
 "<span class='refTitleHelp'>(Choose as many reasons as apply by clicking on them.)</span>" +
 "</span> " +
-"<table><tr>";
+"<table class='tblannotate'><tr>";
 
 
 
@@ -39,9 +39,44 @@ function cito(){
 	else if (refType == 'reis') {
 		addHTML4reis();	
 	}
+	
+	else if (refType == 'plos'){
+		addHTML4plos();	
+	}
 		
 	addEventListeners();	
 }
+
+
+
+
+
+function addHTML4plos(){
+	
+
+	var referenceList = document.getElementById('references');
+
+	if (referenceList) {
+	// iterate through li tags in reference list
+	var el=referenceList.getElementsByTagName("li");
+	for (var y = 0; y < el.length; y++){
+		
+			 var html = html1;
+			
+			 ref += 1; // increment counter
+			 html += spanCITO(arrCITO, el[y]); // add CiTO terms
+			 html += "</tr></table>";
+			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span class='refTitle'>Other Reasons</span>" +
+			 		"<table><tr>"; // alternative reasons
+			 html += spanCITO(arrCITOother, el[y]); // add CiTO for other reasons
+			 html += "</tr></table>" +
+			 		"</div></div>";
+	    	el[y].innerHTML +=  html;
+	    	
+	}}
+	
+}
+
 
 
 
@@ -60,6 +95,7 @@ function addHTML4reis(){
 	for (var y = 0; y < el.length; y++){
 		
 			 var html = html1;
+			
 			 ref += 1; // increment counter
 			 html += spanCITO(arrCITO, el[y]); // add CiTO terms
 			 html += "</tr></table>";
@@ -84,6 +120,8 @@ function addHTML4pubmed(){
 		
 		 if((div[y].getAttribute('class') == 'ref-cit-blk half_rhythm')|| (div[y].getAttribute('class') == 'ref-cit-blk')){   // if the div contains a reference as identified by class value - insert html
 			 var html = html1;
+			
+			 
 			 ref += 1; // increment counter
 			 html += spanCITO(arrCITO, div[y]); // add CiTO terms
 			 html += "</tr></table>";
@@ -100,14 +138,14 @@ function addHTML4pubmed(){
 
 	var l = referenceList.getElementsByTagName("li");
 	for (var z = 0; z < l.length; z++){
-		var object = getObject(el[y]);
+		
 			 var html = html1;
 			 ref += 1; // increment counter
-			 html += spanCITO(arrCITO, l[z], object); // add CiTO terms
+			 html += spanCITO(arrCITO, l[z]); // add CiTO terms
 			 html += "</tr></table>";
 			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span class='refTitle'>Other Reasons</span>" +
 			 		"<table style='margin:0px;'><tr>"; // alternative reasons
-			 html += spanCITO(arrCITOother, l[z], object); // add CiTO for other reasons
+			 html += spanCITO(arrCITOother, l[z]); // add CiTO for other reasons
 			 html += "</tr></table>" +
 			 		"</div></div>";
 			 
@@ -125,10 +163,10 @@ function addHTML4elife(){
 	var el=referenceList.getElementsByTagName("article");
 
 	for (var y = 0; y < el.length; y++){
-		     var object = getObject(el[y]);
+		    
 			 var html = html1;
 			 ref += 1; // increment counter
-			 html += spanCITO(arrCITO, el[y], object); // add CiTO terms
+			 html += spanCITO(arrCITO, el[y]); // add CiTO terms
 			 html += "</tr></table>";
 			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span class='refTitle'>Other Reasons</span>" +
 			 		"<table><tr>"; // alternative reasons
@@ -318,13 +356,63 @@ var object =		getObject4pubmed(obj);
 	}
 	else if (refType == 'reis') {
 	var object = getObject4reis(obj);	
-	}
+	} 
 	
+	else if (refType == 'plos'){
+		var object = getObject4plos(obj);	
+		}
 	return object;
 	
 	
 	
 }
+
+
+
+
+
+function getObject4plos(el){
+	
+	
+	var regexAHREFmatch = /http.*/;
+	var regexAHREFreplace = /\s*$/g;
+	
+	
+	
+	var citedDoc = el.innerHTML;
+
+	 
+	 if (citedDoc.match(regexAHREFmatch) != null){
+		 //extractlink
+		 var obj = citedDoc.match(regexAHREFmatch) + "";
+		 // extract identifier from  link
+		 var obj = obj.replace(regexAHREFreplace, "");
+		 var obj = "<" + obj + "> ";
+		 	 
+	 }
+	
+	 else {
+		 
+		 if (el.innerText){
+			 	var obj =  el.innerText  ;
+				var obj = '"'  + obj + '"';
+		 } else {
+			 	var obj = '""'; 
+		 }
+		
+	 }
+	
+	return obj;
+	
+	
+}
+
+
+
+
+
+
+
 
 
 function getObject4reis(el){

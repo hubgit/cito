@@ -58,13 +58,17 @@ text-align:center;
 	}
 
 
-div.annotate {
+div.cito-annotate {
 	
 width:100% !important;
 margin:1px;
 height:auto;
-background-color:#dddddd;
+//background-color:#dddddd;
 }
+
+
+
+
 
 
 

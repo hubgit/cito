@@ -28,6 +28,10 @@ else if (url.match(/www.ncbi\.nlm\.nih\.gov\/pmc/) != null) {
 else if (url.match(/europepmc\.org/) != null) {
 	addHTML4pubmed();	
 }
+
+else if (url.match(/currents\.plos\.org/) != null){
+	addHTML4plos();
+	}
 	
 addEventListeners();
 
@@ -165,6 +169,10 @@ var object =		getObject4pubmed(obj);
 	var object =	getObject4pubmed(obj);	
 	}
 	
+	else if (url.match(/currents\.plos\.org/) != null){
+		var object = getObject4plos(obj);	
+		}
+	
 	return object;
 	
 	
@@ -175,60 +183,7 @@ var object =		getObject4pubmed(obj);
 function getObject4elife(el){
 	 // retrieve url or text citation for reference being cited
 	 
-	/*
-	 * <article
-	class="elife-reflinks-reflink" id="ref-1" data-original="1"
-	data-author="ando, r"
-	data-title="highlighted generation of fluorescence signals using simultaneous two-color irradiation on dronpmutants"
-	data-date="2007" data-cited="1">
-<div class="elife-reflink-indicators">
-<div class="elife-reflink-indicators-left">
-<div class="elife-reflink-indicator-number"><span data-counter="1">1</span></div>
-<div class="elife-reflink-indicator-cm"><a href="#"></a></div>
-</div>
-<div class="elife-reflink-indicators-right">
-<div class="elife-reflink-indicator-elife"></div>
-<div class="elife-reflink-indicator-oa"></div>
-</div>
-</div>
-<div class="elife-reflink-main"><cite class="elife-reflink-title"><a
-	href="/lookup/external-ref/doi?access_num=10.1529/biophysj.107.105882&amp;link_type=DOI"
-	target="_blank"><span class="nlm-article-title">Highlighted
-generation of fluorescence signals using simultaneous two-color
-irradiation on Dronpa mutants</span></a></cite>
-<div class="elife-reflink-authors"><span
-	class="elife-reflink-author">R Ando</span>, <span
-	class="elife-reflink-author">C Flors</span>, <span
-	class="elife-reflink-author">H Mizuno</span>, <span
-	class="elife-reflink-author">J Hofkens</span>, <span
-	class="elife-reflink-author">A Miyawaki</span></div>
-<div class="elife-reflink-details"><span
-	class="elife-reflink-details-journal"><span class="nlm-source">Biophys
-J</span></span>, <span class="elife-reflink-details-volume">92</span>, <span
-	class="elife-reflink-details-pages">L97-9</span>, <span
-	class="elife-reflink-details-year">2007</span>
-<div class="elife-reflink-doi-cited-wrapper"><span
-	class="elife-reflink-details-doi"><a
-	href="http://dx.doi.org/10.1529/biophysj.107.105882">http://dx.doi.org/10.1529/biophysj.107.105882</a></span>
-— <span class="elife-reflink-details-cited">cited 1 time in paper</span></div>
-<div class="elife-reflink-links-wrapper"><span
-	class="elife-reflink-link life-reflink-link-doi"><a
-	href="/lookup/external-ref/doi?access_num=10.1529/biophysj.107.105882&amp;link_type=DOI"
-	target="_blank">CrossRef</a></span><span
-	class="elife-reflink-link life-reflink-link-medline"><a
-	href="/lookup/external-ref/medline?access_num=17384059&amp;link_type=MED"
-	target="_blank">PubMed</a></span><span
-	class="elife-reflink-link life-reflink-link-newisilink"><a
-	href="/lookup/external-ref/newisilink?access_num=000246811700001&amp;link_type=ISI"
-	target="_blank">Web of science</a></span></div>
-</div>
-</div>
-</article>
-	 * 
-	 * 
-	 * 
-	 * 
-	*/
+	
 	
 	
 	
@@ -356,6 +311,7 @@ function getObject4pubmed(obj){
 	
 	
 }
+
 
 
 
@@ -546,6 +502,33 @@ return arrCITOother;
 
 
 
+function addHTML4plos(){
+	
+
+	var referenceList = document.getElementById('references');
+
+	if (referenceList) {
+	// iterate through li tags in reference list
+	var el=referenceList.getElementsByTagName("li");
+	for (var y = 0; y < el.length; y++){
+		
+			 var html = html1;
+			
+			 ref += 1; // increment counter
+			 html += spanCITO(arrCITO, el[y]); // add CiTO terms
+			 html += "</tr></table>";
+			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span class='refTitle'>Other Reasons</span>" +
+			 		"<table><tr>"; // alternative reasons
+			 html += spanCITO(arrCITOother, el[y]); // add CiTO for other reasons
+			 html += "</tr></table>" +
+			 		"</div></div>";
+	    	el[y].innerHTML +=  html;
+	    	console.log(html);
+	}}
+	
+}
+
+
 function addHTML4pubmed(){
 	
 	var referenceList = document.getElementById("reference-list");
@@ -625,4 +608,41 @@ function addHTML4elife(){
 }
 
 
+
+
+function getObject4plos(el){
+	
+	
+	var regexAHREFmatch = /http.*\./;
+	var regexAHREFreplace = /\.\s.*$/;
+	
+	
+	
+	var citedDoc = el.innerHTML;
+
+	 
+	 if (citedDoc.match(regexAHREFmatch) != null){
+		 //extractlink
+		 var obj = citedDoc.match(regexAHREFmatch) + "";
+		 // extract identifier from  link
+		 var obj = obj.replace(regexAHREFreplace, "");
+		 var obj = "<" + obj + "> ";
+		 	 
+	 }
+	
+	 else {
+		 
+		 if (el.innerText){
+			 	var obj =  el.innerText  ;
+				var obj = '"'  + obj + '"';
+		 } else {
+			 	var obj = '""'; 
+		 }
+		
+	 }
+	
+	return obj;
+	
+	
+}
 

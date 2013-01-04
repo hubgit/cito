@@ -1,17 +1,17 @@
 
 
 {
-  	"name": "Annotate PubMed/eLife references with CiTO",
+  	"name": "Annotate PubMed/eLife/PLoS Currents with CiTO",
   	"author": "Tanya Gray Jones",
-   	"version": "2.11",
+   	"version": "2.16",
   	"manifest_version": 2,
-  	"description": "Annotate article references in PubMed Central, Europe PubMed Central and eLife using CiTO, the Citation Typing Ontology",
+  	"description": "Annotate article references in (Europe) PubMed Central, eLife and PloS Currents using CiTO, the Citation Typing Ontology",
   	"homepage_url": "http://opencitations.wordpress.com/2010/10/14/introducing-the-semantic-publishing-and-referencing-spar-ontologies/",
   
   
   	"content_scripts": [
     {
-      "matches": ["http://europepmc.org/*", "http://www.ncbi.nlm.nih.gov/pmc/*", "http://elife.elifesciences.org/*", "https://elife.elifesciences.org/*"],
+      "matches": ["http://europepmc.org/*", "http://www.ncbi.nlm.nih.gov/pmc/*", "http://elife.elifesciences.org/*", "https://elife.elifesciences.org/*", "http://www.ai-journal.com/*", "http://currents.plos.org/*"],
       "css": ["cito.css"],
       "js": ["myscript.js", "jquery.min.js"]
     }
@@ -20,7 +20,7 @@
    "background": {
     "scripts": ["eventPage.js"]
   },
-  "permissions": ["storage",  "http://www.miidi.org/", "cookies", "webRequest",  "http://europepmc.org/*",  "http://elife.elifesciences.org/*", "https://elife.elifesciences.org/*"]
+  "permissions": ["storage",  "http://www.miidi.org/", "cookies", "webRequest",  "http://europepmc.org/*",  "http://elife.elifesciences.org/*", "https://elife.elifesciences.org/*", "http://www.ai-journal.com/*", "http://currents.plos.org/*"]
 }
    
  
