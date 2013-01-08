@@ -545,9 +545,12 @@ function getObject4pubmed(obj){
 	 }
 	 
 	 else {
-		var object =  obj.innerText  ;
-		
-		var object = '"'  + object.replace(regexINDEXreplace, "") + '"';
+		 if (obj.innerText){
+			 	var object =  obj.innerText  ;
+				var object = '"'  + object.replace(regexINDEXreplace, "") + '"';
+		 } else {
+			 	var object = '""'; 
+		 }
 		
 	 }
 	
