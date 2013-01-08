@@ -7,7 +7,7 @@ var ref = 0; // counter to track reference number
 var url = window.location.href;
 var  subject = "<" + url + ">"  ;   // citing research article
 
-var refType = "plos"; // possible values = reis, pubmed, elife,  plos 
+var refType = "pubmed"; // possible values = reis, pubmed, elife,  plos 
 
 
 var predicatePrefix = "http://purl.org/spar/cito/";
@@ -170,7 +170,7 @@ function addHTML4elife(){
 			 html += "</tr></table>";
 			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span class='refTitle'>Other Reasons</span>" +
 			 		"<table><tr>"; // alternative reasons
-			 html += spanCITO(arrCITOother, el[y], object); // add CiTO for other reasons
+			 html += spanCITO(arrCITOother, el[y]); // add CiTO for other reasons
 			 html += "</tr></table>" +
 			 		"</div></div>";
 	    	el[y].innerHTML +=  html;
