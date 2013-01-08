@@ -15,7 +15,7 @@ var html1 = "<div class='cito-annotate'>" +
 "<span class='refTitle'>Why does this article cite that reference? " +
 "<span class='refTitleHelp'>(Choose as many reasons as apply by clicking on them.)</span>" +
 "</span> " +
-"<table style='margin:0px;'><tr>";
+"<table  class='tblannotate'><tr>";
 
 
 if (url.match(/elifesciences/) != null) {			
@@ -518,7 +518,7 @@ function addHTML4plos(){
 			 html += spanCITO(arrCITO, el[y]); // add CiTO terms
 			 html += "</tr></table>";
 			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span class='refTitle'>Other Reasons</span>" +
-			 		"<table><tr>"; // alternative reasons
+			 		"<table  class='tblannotate'><tr>"; // alternative reasons
 			 html += spanCITO(arrCITOother, el[y]); // add CiTO for other reasons
 			 html += "</tr></table>" +
 			 		"</div></div>";
@@ -542,7 +542,7 @@ function addHTML4pubmed(){
 			 html += spanCITO(arrCITO, div[y]); // add CiTO terms
 			 html += "</tr></table>";
 			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span ckass='refTitle'>Other Reasons</span>" +
-			 		"<table><tr>"; // alternative reasons
+			 		"<table  class='tblannotate'><tr>"; // alternative reasons
 			 html += spanCITO(arrCITOother, div[y]); // add CiTO for other reasons
 			 html += "</tr></table>" +
 			 		"</div></div>";
@@ -560,7 +560,7 @@ function addHTML4pubmed(){
 			 html += spanCITO(arrCITO, l[z]); // add CiTO terms
 			 html += "</tr></table>";
 			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span class='refTitle'>Other Reasons</span>" +
-			 		"<table style='margin:0px;'><tr>"; // alternative reasons
+			 		"<table  class='tblannotate'><tr>"; // alternative reasons
 			 html += spanCITO(arrCITOother, l[z]); // add CiTO for other reasons
 			 html += "</tr></table>" +
 			 		"</div></div>";
@@ -595,7 +595,7 @@ function addHTML4elife(){
 			 html += spanCITO(arrCITO, el[y], object); // add CiTO terms
 			 html += "</tr></table>";
 			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span class='refTitle'>Other Reasons</span>" +
-			 		"<table><tr>"; // alternative reasons
+			 		"<table  class='tblannotate'><tr>"; // alternative reasons
 			 html += spanCITO(arrCITOother, el[y], object); // add CiTO for other reasons
 			 html += "</tr></table>" +
 			 		"</div></div>";

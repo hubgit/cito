@@ -7,8 +7,7 @@ var ref = 0; // counter to track reference number
 var url = window.location.href;
 var  subject = "<" + url + ">"  ;   // citing research article
 
-var refType = "plos"; // possible values = reis, pubmed, elife,  plos 
-
+var refType = "pubmed"; // possible values = reis, pubmed, elife,  plos 
 
 var predicatePrefix = "http://purl.org/spar/cito/";
 var extensionid = "O7WRSFR9ABNOWYFMHRFT4RXLF";
@@ -67,7 +66,7 @@ function addHTML4plos(){
 			 html += spanCITO(arrCITO, el[y]); // add CiTO terms
 			 html += "</tr></table>";
 			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span class='refTitle'>Other Reasons</span>" +
-			 		"<table><tr>"; // alternative reasons
+			 		"<table class='tblannotate'><tr>"; // alternative reasons
 			 html += spanCITO(arrCITOother, el[y]); // add CiTO for other reasons
 			 html += "</tr></table>" +
 			 		"</div></div>";
@@ -100,7 +99,7 @@ function addHTML4reis(){
 			 html += spanCITO(arrCITO, el[y]); // add CiTO terms
 			 html += "</tr></table>";
 			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span class='refTitle'>Other Reasons</span>" +
-			 		"<table><tr>"; // alternative reasons
+			 		"<table class='tblannotate'><tr>"; // alternative reasons
 			 html += spanCITO(arrCITOother, el[y]); // add CiTO for other reasons
 			 html += "</tr></table>" +
 			 		"</div></div>";
@@ -126,7 +125,7 @@ function addHTML4pubmed(){
 			 html += spanCITO(arrCITO, div[y]); // add CiTO terms
 			 html += "</tr></table>";
 			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span ckass='refTitle'>Other Reasons</span>" +
-			 		"<table><tr>"; // alternative reasons
+			 		"<table class='tblannotate'><tr>"; // alternative reasons
 			 html += spanCITO(arrCITOother, div[y]); // add CiTO for other reasons
 			 html += "</tr></table>" +
 			 		"</div></div>";
@@ -136,22 +135,9 @@ function addHTML4pubmed(){
 	}
 
 
-	var l = referenceList.getElementsByTagName("li");
-	for (var z = 0; z < l.length; z++){
-		
-			 var html = html1;
-			 ref += 1; // increment counter
-			 html += spanCITO(arrCITO, l[z]); // add CiTO terms
-			 html += "</tr></table>";
-			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span class='refTitle'>Other Reasons</span>" +
-			 		"<table style='margin:0px;'><tr>"; // alternative reasons
-			 html += spanCITO(arrCITOother, l[z]); // add CiTO for other reasons
-			 html += "</tr></table>" +
-			 		"</div></div>";
-			 
-	    	l[z].innerHTML +=  html;
 	
-}}
+
+}
 
 
 function addHTML4elife(){
@@ -169,8 +155,8 @@ function addHTML4elife(){
 			 html += spanCITO(arrCITO, el[y]); // add CiTO terms
 			 html += "</tr></table>";
 			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span class='refTitle'>Other Reasons</span>" +
-			 		"<table><tr>"; // alternative reasons
-			 html += spanCITO(arrCITOother, el[y], object); // add CiTO for other reasons
+			 		"<table class='tblannotate'><tr>"; // alternative reasons
+			 html += spanCITO(arrCITOother, el[y]); // add CiTO for other reasons
 			 html += "</tr></table>" +
 			 		"</div></div>";
 	    	el[y].innerHTML +=  html;
@@ -377,11 +363,8 @@ function getObject4plos(el){
 	var regexAHREFmatch = /http.*/;
 	var regexAHREFreplace = /\s*$/g;
 	
-	
-	
 	var citedDoc = el.innerHTML;
 
-	 
 	 if (citedDoc.match(regexAHREFmatch) != null){
 		 //extractlink
 		 var obj = citedDoc.match(regexAHREFmatch) + "";
@@ -553,18 +536,15 @@ function getObject4pubmed(obj){
 		 var object = object.replace(regexPUBMEDreplace, "");
 		 var object = "<http://www.ncbi.nlm.nih.gov" + object + "> ";
 		 
-		 
 	 }
 	 else if (citedDoc.match(regexPMCmatch) != null){
 	 
 		 var object = citedDoc.match(regexPMCmatch) + "";
 		 var object = object.replace(regexPMCreplace, "");
 		 var object = "<http://www.ncbi.nlm.nih.gov" + object + "> ";
-		 
 	 }
 	 
 	 else {
-		 
 		var object =  obj.innerText  ;
 		
 		var object = '"'  + object.replace(regexINDEXreplace, "") + '"';
@@ -572,7 +552,6 @@ function getObject4pubmed(obj){
 	 }
 	
 	return object;
-	
 	
 }
 
@@ -744,9 +723,10 @@ function predicate(){
 function arrCITO(){
 
 	var arrCITO = new Array(		
-		  new Array("cites as authority",  "cites for information",  "corrects",  "critiques"),
-		  new Array("discusses", "extends", "obtains background from",  "reviews"),
-		  new Array("updates", "uses data from",  "uses method in" , "OTHER REASON") 	
+		  new Array("cites as authority",  "cites for information",  "corrects"),
+		  new Array("critiques","discusses", "extends"),
+		  new Array("obtains background from",  "reviews","updates") ,
+		  new Array( "uses data from",  "uses method in" , "OTHER REASON") 
 	);
 return arrCITO;
 }
@@ -754,14 +734,14 @@ return arrCITO;
 function arrCITOother(){
 	
 	var arrCITOother = new Array(		
-			  new Array("agrees with", "cites as data source","cites as evidence", "cites as metadata document","cites as recommended reading","cites as related", "cites as source document","compiles",   "confirms"),
-			  new Array( "contains assertion from", "credits","derides",   "disagrees with", "disputes",   "documents","gives background to",   "gives support to",  "has reply"),
-			  new Array( "includes excerpt from",   "includes quotation from", "qualifies",   "refutes",   "replies to",   "retracts",  "ridicules",   "shares authors with",   "supports","uses conclusions from")
-		);
+			  new Array("agrees with", "cites as data source","cites as evidence", "cites as metadata document","cites as recommended reading","cites as related", "cites as source document"),
+			  new Array( "compiles",   "confirms","contains assertion from", "credits","derides",   "disagrees with", "disputes"),
+			  new Array( "documents","gives background to",   "gives support to",  "has reply","includes excerpt from",   "includes quotation from", "qualifies"),
+			  new Array( "refutes",   "replies to",   "retracts",  "ridicules",   "shares authors with",   "supports","uses conclusions from")	
+	);
 return arrCITOother;
 
 }
-
 
 
 

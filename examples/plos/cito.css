@@ -60,15 +60,10 @@ text-align:center;
 
 div.cito-annotate {
 	
-width:95% !important;
-
+width:100% !important;
+margin:1px;
 height:auto;
-background-color:white;
-
-padding:10px;
-border:1px solid;
-border-color:slategray;
-border-radius:10px;
+//background-color:#dddddd;
 }
 
 
@@ -77,13 +72,7 @@ border-radius:10px;
 
 
 
-span.tag {outline:none;
-
-border:1px solid;
-border-color:slategray;
-border-radius:3px;
-
-}
+span.tag {outline:none; }
 span.tag strong {line-height:30px;}
 span.tag:hover {text-decoration:none;} 
 span.tag span {
@@ -110,9 +99,7 @@ span.tag span
 
 
 
-span.tagSelected {outline:none; border:1px solid;
-border-color:slategray;
-border-radius:3px; margin:1px;}
+span.tagSelected {outline:none; }
 span.tagSelected strong {line-height:30px;}
 span.tagSelected:hover {text-decoration:none;} 
 span.tagSelected span {
@@ -151,18 +138,13 @@ display:inline;
 	}	
 	
 	
-.tblannotate {
-width:100%;	
-	}	
-
-.tblannotate, tr{
-margin:0px;	
-background-color::#white;
-
+.tblannotate{
+	
+border:0px;	
 	}
 
-.tblannotate,td{
-margin:0px;	
-border:none !important;
-
+.tblannotate td{
+	
+border:0px;	
 	}	
+	
