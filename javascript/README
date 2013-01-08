@@ -1,0 +1,17 @@
+This folder contains a CiTO javascript function that allows creation of CiTO RDF triples in a research article's reference list, 
+and submission of these triples to an external database that collates triples from all users.
+
+To use, download the javacript folder, and reference the CiTO files in your web page using the following code:
+
+<script  type="text/javascript" src="./javascript/cito.js"></script>
+<link rel="stylesheet" type="text/css" href="./javascript/cito.css">
+<script language="JavaScript" type="text/javascript" src="./javascript/jquery.min.js"></script>
+
+Additionally, modify the <body> HTML tag as follows:
+<body onload='cito()'>
+
+This modification will call the cito() function to modify the HTML in the page.
+
+Modify line 10 of cito.js to define the type of reference list to be parsed.
+
+Open the host web page in a web browser.

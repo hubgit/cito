@@ -11,4 +11,4 @@ Additionally, the <body> HTML tag has been modified as follows:
 <body onload='cito()'>
 This modification will call the cito() function to modify the HTML in the page.
 
-To run this example locally, download the example and open the "elife.html" file in a web browser.
+To run this example locally, download the example folder and open the "Genetic risk profiling for prediction of type 2 diabetes – PLOS Currents Evidence on Genomic Tests.html" file in a web browser.

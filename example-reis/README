@@ -3,9 +3,9 @@ and submission of these triples to an external database that collates triples fr
 
 The CiTO javascript files have been included in the code as follows:
 
-<script  type="text/javascript" src="../javascript/cito.js"></script>
-<link rel="stylesheet" type="text/css" href="../javascript/cito.css">
-<script language="JavaScript" type="text/javascript" src="../javascript/jquery.min.js"></script>
+<script  type="text/javascript" src="./javascript/cito.js"></script>
+<link rel="stylesheet" type="text/css" href="./javascript/cito.css">
+<script language="JavaScript" type="text/javascript" src="./javascript/jquery.min.js"></script>
 
 
 Additionally, the <body> HTML tag has been modified as follows:
@@ -14,8 +14,5 @@ Additionally, the <body> HTML tag has been modified as follows:
 
 This modification will call the cito() function to modify the HTML in the page.
 
-To run this example locally, download the example and javascript folders to the same directory. In the javascript folder, modify line 10 to read:
-var refType = "reis";
-
-Open the 
+To run this example locally, download the example open the 
 "PLoS Neglected Tropical Diseases  Impact of Environment and Social Gradient on Leptospira Infection in Urban Slums.html" file in a web browser.
