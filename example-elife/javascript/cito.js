@@ -7,7 +7,7 @@ var ref = 0; // counter to track reference number
 var url = window.location.href;
 var  subject = "<" + url + ">"  ;   // citing research article
 
-var refType = "plos"; // possible values = reis, pubmed, elife,  plos 
+var refType = "elife"; // possible values = reis, pubmed, elife,  plos 
 
 
 var predicatePrefix = "http://purl.org/spar/cito/";
