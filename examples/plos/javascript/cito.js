@@ -7,7 +7,7 @@ var ref = 0; // counter to track reference number
 var url = window.location.href;
 var  subject = "<" + url + ">"  ;   // citing research article
 
-var refType = "elife"; // possible values = reis, pubmed, elife,  plos 
+var refType = "plos"; // possible values = reis, pubmed, elife,  plos 
 
 
 var predicatePrefix = "http://purl.org/spar/cito/";
@@ -744,9 +744,10 @@ function predicate(){
 function arrCITO(){
 
 	var arrCITO = new Array(		
-		  new Array("cites as authority",  "cites for information",  "corrects",  "critiques"),
-		  new Array("discusses", "extends", "obtains background from",  "reviews"),
-		  new Array("updates", "uses data from",  "uses method in" , "OTHER REASON") 	
+		  new Array("cites as authority",  "cites for information",  "corrects"),
+		  new Array("critiques","discusses", "extends"),
+		  new Array("obtains background from",  "reviews","updates") ,
+		  new Array( "uses data from",  "uses method in" , "OTHER REASON") 
 	);
 return arrCITO;
 }
@@ -754,15 +755,14 @@ return arrCITO;
 function arrCITOother(){
 	
 	var arrCITOother = new Array(		
-			  new Array("agrees with", "cites as data source","cites as evidence", "cites as metadata document","cites as recommended reading","cites as related", "cites as source document","compiles",   "confirms"),
-			  new Array( "contains assertion from", "credits","derides",   "disagrees with", "disputes",   "documents","gives background to",   "gives support to",  "has reply"),
-			  new Array( "includes excerpt from",   "includes quotation from", "qualifies",   "refutes",   "replies to",   "retracts",  "ridicules",   "shares authors with",   "supports","uses conclusions from")
-		);
+			  new Array("agrees with", "cites as data source","cites as evidence", "cites as metadata document","cites as recommended reading","cites as related", "cites as source document"),
+			  new Array( "compiles",   "confirms","contains assertion from", "credits","derides",   "disagrees with", "disputes"),
+			  new Array( "documents","gives background to",   "gives support to",  "has reply","includes excerpt from",   "includes quotation from", "qualifies"),
+			  new Array( "refutes",   "replies to",   "retracts",  "ridicules",   "shares authors with",   "supports","uses conclusions from")	
+	);
 return arrCITOother;
 
 }
-
-
 
 
 
