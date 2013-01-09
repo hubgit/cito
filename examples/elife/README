@@ -3,9 +3,9 @@ and submission of these triples to an external database that collates triples fr
 
 The CiTO javascript files have been included in the code as follows:
 
-<script  type="text/javascript" src="./javascript/cito.js"></script>
-<link rel="stylesheet" type="text/css" href="./javascript/cito.css">
-<script language="JavaScript" type="text/javascript" src="./javascript/jquery.min.js"></script>
+<script id='citojs' type="text/javascript" src="../../javascript/cito.js?reftype=elife"></script>
+<link rel="stylesheet" type="text/css" href="../../javascript/cito.css">
+<script language="JavaScript" type="text/javascript" src="../../javascript/jquery.min.js"></script>
 
 Additionally, the <body> HTML tag has been modified as follows:
 <body onload='cito()'>

@@ -3,7 +3,7 @@ and submission of these triples to an external database that collates triples fr
 
 The CiTO javascript files have been included in the code as follows:
 
-<script  type="text/javascript" src="./javascript/cito.js"></script>
+<script id='citojs' type="text/javascript" src="./javascript/cito.js?reftype=plos"></script>
 <link rel="stylesheet" type="text/css" href="./javascript/cito.css">
 <script language="JavaScript" type="text/javascript" src="./javascript/jquery.min.js"></script>
 
@@ -11,4 +11,4 @@ Additionally, the <body> HTML tag has been modified as follows:
 <body onload='cito()'>
 This modification will call the cito() function to modify the HTML in the page.
 
-To run this example locally, download the example folder and open the "Genetic risk profiling for prediction of type 2 diabetes – PLOS Currents Evidence on Genomic Tests.html" file in a web browser.
+To run this example locally, download the example folder and open the "Genetic.html" file in a web browser
