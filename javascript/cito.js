@@ -176,6 +176,8 @@ function addHTML4reis(){
 
 function addHTML4pubmed(){
 	
+	
+	
 	var referenceList = document.getElementById("reference-list");
 	// iterate through div tags in page
 	var div=referenceList.getElementsByTagName("div");
@@ -200,8 +202,21 @@ function addHTML4pubmed(){
 
 
 	
+	  var l = referenceList.getElementsByTagName("li");
+	    for (var z = 0; z < l.length; z++){
+	        var html = html1;
+	        ref += 1; // increment counter
+	         html += spanCITO(arrCITO, l[z]); // add CiTO terms
+	        html += "</tr></table>";
+	         html += "<div id='otherReasons" + ref +"' class='otherReasons'><span class='refTitle'>Other Reasons</span>" +
+	           "<table class='tblannotate'><tr>"; // alternative reasons
+	       html += spanCITO(arrCITOother, l[z]); // add CiTO for other reasons
+	       html += "</tr></table>" +
+	             "</div></div>";
+	          l[z].innerHTML +=  html;
 
-}
+	 }
+	    }
 
 
 function addHTML4elife(){
@@ -278,9 +293,9 @@ function addEventListeners(){
 
 				 var postData = {url: url, triple: triple};
 				
-		//		 console.log(postData);
-		//		 console.log(url);
-				 
+				
+				 //console.log(url);
+				
 				 $.ajax({
 					    type: 'POST',
 					    url: listen,
@@ -294,6 +309,7 @@ function addEventListeners(){
 					        console.log('error responseData:' + responseData + ' errorThrown:' + errorThrown + 'textStatus:' + textStatus);
 					    }
 					});
+					
 			});	
 			}}}
 
