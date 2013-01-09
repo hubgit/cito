@@ -392,8 +392,8 @@ var object =		getObject4pubmed(obj);
 function getObject4zookeys(el){
 	
 	
-	var regexAHREFmatch = /.*doi: <a target="_blank" href=".*/;
-	var regexAHREFreplace = /doi: <a target="_blank" href="|">.*<\/a>.*$/g;
+	var regexAHREFmatch = /doi:.*/;
+	var regexAHREFreplace = /doi: <a target="_blank" href=".*">|<\/a.*/g;
 	
 	var citedDoc = el.innerHTML;
 
@@ -402,7 +402,7 @@ function getObject4zookeys(el){
 		 var obj = citedDoc.match(regexAHREFmatch) + "";
 		 // extract identifier from  link
 		 var obj = obj.replace(regexAHREFreplace, "");
-		 var obj = "<" + obj + "> ";
+		 var obj = "<http://dx.doi.org/" + obj + "> ";
 		 	 
 	 }
 	
