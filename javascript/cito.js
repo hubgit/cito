@@ -1,4 +1,6 @@
 
+addOnloadEvent(cito);
+
 // COUNTERS
 var cnt = 0; // counter used to assign unique id to each CiTO term span tag
 var ref = 0; // counter to track reference number
@@ -32,6 +34,28 @@ var html1 = "<div class='cito-annotate'>" +
 "<span class='refTitleHelp'>(Choose as many reasons as apply by clicking on them.)</span>" +
 "</span> " +
 "<table class='tblannotate'><tr>";
+
+
+//from http://www.tek-tips.com/faqs.cfm?fid=4862
+function addOnloadEvent(fnc){
+	  if ( typeof window.addEventListener != "undefined" )
+	    window.addEventListener( "load", fnc, false );
+	  else if ( typeof window.attachEvent != "undefined" ) {
+	    window.attachEvent( "onload", fnc );
+	  }
+	  else {
+	    if ( window.onload != null ) {
+	      var oldOnload = window.onload;
+	      window.onload = function ( e ) {
+	        oldOnload( e );
+	        window[fnc]();
+	      };
+	    }
+	    else 
+	      window.onload = fnc;
+	  }
+	}
+
 
 
 function cito(){

@@ -8,10 +8,6 @@ The CiTO javascript files have been included in the code as follows:
 <script language="JavaScript" type="text/javascript" src="./javascript/jquery.min.js"></script>
 
 
-Additionally, the <body> HTML tag has been modified as follows:
-<body onload='cito()'>
 
-This modification will call the cito() function to modify the HTML in the page.
-
-To run this example locally, download the example and open the 
+To run this example locally, download the cito folder and open the 
 "Pathema  a clade-specific bioinformatics resource center for pathogen research.html" file in a web browser.

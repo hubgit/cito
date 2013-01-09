@@ -8,11 +8,4 @@ The CiTO javascript files have been included in the code as follows:
 <script language="JavaScript" type="text/javascript" src="../../javascript/jquery.min.js"></script>
 
 
-Additionally, the <body> HTML tag has been modified as follows:
-
-<body onload='cito()'>
-
-This modification will call the cito() function to modify the HTML in the page.
-
-To run this example locally, download the example open the 
-"article.html" file in a web browser.
+To run this example locally, download the cito foldre and open the "article.html" file in a web browser.
