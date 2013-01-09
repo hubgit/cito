@@ -7,7 +7,16 @@ var ref = 0; // counter to track reference number
 var url = window.location.href;
 var  subject = "<" + url + ">"  ;   // citing research article
 
-var refType = "pubmed"; // possible values = reis, pubmed, elife,  plos 
+
+var scriptsrc = document.getElementById('citojs').src;
+var refType = scriptsrc.replace(/.*reftype=/, '');
+
+if (refType == '') {
+alert('Please specify a reference list type in your HTML page');	
+	
+}
+
+ // possible values = reis, pubmed, elife,  plos, zookeys
 
 var predicatePrefix = "http://purl.org/spar/cito/";
 var extensionid = "O7WRSFR9ABNOWYFMHRFT4RXLF";
@@ -25,7 +34,6 @@ var html1 = "<div class='cito-annotate'>" +
 "<table class='tblannotate'><tr>";
 
 
-
 function cito(){
 	
 	if (refType == 'elife') {			
@@ -41,6 +49,10 @@ function cito(){
 	
 	else if (refType == 'plos'){
 		addHTML4plos();	
+	}
+	else if (refType == 'zookeys'){
+	
+		addHTML4zookeys();	
 	}
 		
 	addEventListeners();	
@@ -77,6 +89,34 @@ function addHTML4plos(){
 }
 
 
+
+function addHTML4zookeys(){
+	
+	
+	var referenceList = document.getElementsByClassName('referencesText');
+
+	if (referenceList) {
+	// iterate through li tags in reference list
+	var el=referenceList[0].getElementsByClassName("referenceRow");
+	for (var y = 0; y < el.length; y++){
+		
+			 var html = html1;
+			
+			 ref += 1; // increment counter
+			 html += spanCITO(arrCITO, el[y]); // add CiTO terms
+			 html += "</tr></table>";
+			 html += "<div id='otherReasons" + ref +"' class='otherReasons'><span class='refTitle'>Other Reasons</span>" +
+			 		"<table class='tblannotate'><tr>"; // alternative reasons
+			 html += spanCITO(arrCITOother, el[y]); // add CiTO for other reasons
+			 html += "</tr></table>" +
+			 		"</div></div>";
+			 
+			 
+	    	el[y].innerHTML +=  html;
+	    	
+	}}
+	
+}
 
 
 
@@ -264,18 +304,18 @@ function spanCITO(arrCITO, obj){
 	for (var i = 0; i < arrCITO.length; i++) {
 		
 		//create table cell
-	html = html + "<td>";	
+		 html = html + "<td>";
 		  var arrCol = arrCITO[i];
 		  // iterate through CiTO terms to be displayed in this column
 		  for (var j = 0; j < arrCol.length; j++) {
 			  // extract property value for CiTO - to be displayed as text
 			  var property = arrCol[j];
-			  
+			 
 			  // treat 'OTHER REASON' differently - this will allow user to display/hide additional CiTO terms
 			  if (property == 'OTHER REASON') {
 				  var html = html + "<span id='otherreason' class='tag'  " +
 				  		"onClick='if (document.getElementById(&quot;otherReasons" + ref +"&quot;).className == \"otherReasonsDisplay\") {(document.getElementById(&quot;otherReasons" + ref + "&quot;).className=\"otherReasons\");} else if  ( document.getElementById(&quot;otherReasons" + ref + "&quot;).className == \"otherReasons\") { (document.getElementById(&quot;otherReasons" + ref + "&quot;).className = \"otherReasonsDisplay\");}'><div id='show-other' onClick='if (this.innerHTML == &quot;SHOW OTHER REASONS&quot;){this.innerHTML = &quot;HIDE OTHER REASONS&quot; } else {this.innerHTML= &quot;SHOW OTHER REASONS&quot;}'>SHOW OTHER REASONS</div>" +
-				  				"<span>Click here to display or hide other reasons</span></span><br/>";	  
+				  				"<span>Click here to display or hide other reasons</span></span>";	  
 				  
 			  }
 			  else {
@@ -302,23 +342,9 @@ function spanCITO(arrCITO, obj){
 						var cl = 'tag';
 					}
 						 
-						 
-					
-					 
-					 
-					 
-					var html = html + "<span id='" + id + "' desc='"+ triple +"' class='" + cl + "' onClick='if (this.className == \"tagSelected\") {(this.className=\"tag\");} else if  ( this.className == \"tag\") { (this.className = \"tagSelected\");}'>" + property +  "<span>" + description + "</span></span><br/>";	  
+						 	var html = html + "<span id='" + id + "' desc='"+ triple +"' class='" + cl + "' onClick='if (this.className == \"tagSelected\") {(this.className=\"tag\");} else if  ( this.className == \"tag\") { (this.className = \"tagSelected\");}'>" + property +  "<span>" + description + "</span></span>";	  
 		  
-					 
-					
-					 
-					 
-					 
-					 
-					
-					 
-					 
-					 
+ 
 		  cnt += 1; // increment counter used to assign unique id to each CiTO term span tag
 		  }
 			  
@@ -347,11 +373,57 @@ var object =		getObject4pubmed(obj);
 	else if (refType == 'plos'){
 		var object = getObject4plos(obj);	
 		}
+	
+	else if (refType == 'zookeys'){
+		var object = getObject4zookeys(obj);	
+		}
+	
 	return object;
 	
 	
 	
 }
+
+
+
+
+
+
+function getObject4zookeys(el){
+	
+	
+	var regexAHREFmatch = /.*doi: <a target="_blank" href=".*/;
+	var regexAHREFreplace = /doi: <a target="_blank" href="|">.*<\/a>.*$/g;
+	
+	var citedDoc = el.innerHTML;
+
+	 if (citedDoc.match(regexAHREFmatch) != null){
+		 //extractlink
+		 var obj = citedDoc.match(regexAHREFmatch) + "";
+		 // extract identifier from  link
+		 var obj = obj.replace(regexAHREFreplace, "");
+		 var obj = "<" + obj + "> ";
+		 	 
+	 }
+	
+	 else {
+		 
+		 if (el.innerText){
+			 	var obj =  el.innerText  ;
+				var obj = '"'  + obj + '"';
+		 } else {
+			 	var obj = '""'; 
+		 }
+		
+	 }
+	
+	return obj;
+	
+	
+}
+
+
+
 
 
 
