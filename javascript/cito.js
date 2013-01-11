@@ -201,7 +201,7 @@ function addHTML4pubmed(){
 	}
 
 
-	
+	/*
 	  var l = referenceList.getElementsByTagName("li");
 	    for (var z = 0; z < l.length; z++){
 	        var html = html1;
@@ -216,6 +216,7 @@ function addHTML4pubmed(){
 	          l[z].innerHTML +=  html;
 
 	 }
+	 */
 	    }
 
 
@@ -292,11 +293,12 @@ function addEventListeners(){
 				
 
 				 var postData = {url: url, triple: triple};
+							
+				
+			// update further to http://stackoverflow.com/questions/6692240/jquery-ajax-uncaught-type-error - use jQuery instead of $	
 				
 				
-				 //console.log(url);
-				
-				 $.ajax({
+				 jQuery.ajax({
 					    type: 'POST',
 					    url: listen,
 					    crossDomain: true,
@@ -309,6 +311,7 @@ function addEventListeners(){
 					        console.log('error responseData:' + responseData + ' errorThrown:' + errorThrown + 'textStatus:' + textStatus);
 					    }
 					});
+					
 					
 			});	
 			}}}
@@ -365,6 +368,8 @@ function spanCITO(arrCITO, obj){
 					 var pred = "<" + predicatePrefix + predicate[property] + ">"; // relation from CiTO
 								 
 					 var object = getObject(obj);
+					
+					
 					 var triple = subject + "|"  + pred + "|" + object + "\n";
 					 var id = 'p' + cnt; // span id - used to store selection locally
 					 
@@ -646,14 +651,14 @@ function getObject4pubmed(obj){
 		 var object = citedDoc.match(regexPUBMEDmatch) + "";
 		 // extract identifier from pubmed link
 		 var object = object.replace(regexPUBMEDreplace, "");
-		 var object = "<http://www.ncbi.nlm.nih.gov" + object + "> ";
+		 var object = "<" + object + "> ";
 		 
 	 }
 	 else if (citedDoc.match(regexPMCmatch) != null){
 	 
 		 var object = citedDoc.match(regexPMCmatch) + "";
 		 var object = object.replace(regexPMCreplace, "");
-		 var object = "<http://www.ncbi.nlm.nih.gov" + object + "> ";
+		 var object = "<" + object + "> ";
 	 }
 	 
 	 else {
