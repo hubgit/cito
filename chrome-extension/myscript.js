@@ -1,4 +1,7 @@
 
+
+
+
 // COUNTERS
 var cnt = 0; // counter used to assign unique id to each CiTO term span tag
 var ref = 0; // counter to track reference number
@@ -34,6 +37,7 @@ else if (url.match(/currents\.plos\.org/) != null){
 	}
 	
 addEventListeners();
+
 
 
 
