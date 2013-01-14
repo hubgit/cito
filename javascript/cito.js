@@ -201,7 +201,7 @@ function addHTML4pubmed(){
 	}
 
 
-	/*
+	
 	  var l = referenceList.getElementsByTagName("li");
 	    for (var z = 0; z < l.length; z++){
 	        var html = html1;
@@ -216,7 +216,6 @@ function addHTML4pubmed(){
 	          l[z].innerHTML +=  html;
 
 	 }
-	 */
 	    }
 
 
@@ -293,12 +292,11 @@ function addEventListeners(){
 				
 
 				 var postData = {url: url, triple: triple};
-							
-				
-			// update further to http://stackoverflow.com/questions/6692240/jquery-ajax-uncaught-type-error - use jQuery instead of $	
 				
 				
-				 jQuery.ajax({
+				 //console.log(url);
+				
+				 $.ajax({
 					    type: 'POST',
 					    url: listen,
 					    crossDomain: true,
@@ -311,7 +309,6 @@ function addEventListeners(){
 					        console.log('error responseData:' + responseData + ' errorThrown:' + errorThrown + 'textStatus:' + textStatus);
 					    }
 					});
-					
 					
 			});	
 			}}}
@@ -368,8 +365,6 @@ function spanCITO(arrCITO, obj){
 					 var pred = "<" + predicatePrefix + predicate[property] + ">"; // relation from CiTO
 								 
 					 var object = getObject(obj);
-					
-					
 					 var triple = subject + "|"  + pred + "|" + object + "\n";
 					 var id = 'p' + cnt; // span id - used to store selection locally
 					 
@@ -476,9 +471,19 @@ function getObject4zookeys(el){
 
 function getObject4plos(el){
 	
+	<!--
+	example reference
+	<li data-refid="9" id="ref9">SteelFisher, G.K., et al., 
+	The public&#039;s response to the 2009 H1N1 influenza pandemic. N Engl J Med, 2010. 362(22):
+		p. e65.<br /><a href="http://www.nejm.org/doi/full/10.1056/NEJMp1005102">Reference Link</a></li>
+		
+		
+		
+	-->
 	
-	var regexAHREFmatch = /http.*/;
-	var regexAHREFreplace = /\s*$/g;
+	
+		var regexAHREFmatch = /http.*/;
+		var regexAHREFreplace = /\".*$/;
 	
 	var citedDoc = el.innerHTML;
 
@@ -651,14 +656,14 @@ function getObject4pubmed(obj){
 		 var object = citedDoc.match(regexPUBMEDmatch) + "";
 		 // extract identifier from pubmed link
 		 var object = object.replace(regexPUBMEDreplace, "");
-		 var object = "<" + object + "> ";
+		 var object = "<http://www.ncbi.nlm.nih.gov" + object + "> ";
 		 
 	 }
 	 else if (citedDoc.match(regexPMCmatch) != null){
 	 
 		 var object = citedDoc.match(regexPMCmatch) + "";
 		 var object = object.replace(regexPMCreplace, "");
-		 var object = "<" + object + "> ";
+		 var object = "<http://www.ncbi.nlm.nih.gov" + object + "> ";
 	 }
 	 
 	 else {
