@@ -616,11 +616,10 @@ function addHTML4elife(){
 
 function getObject4plos(el){
 	
+
 	
-	var regexAHREFmatch = /http.*\./;
-	var regexAHREFreplace = /\.\s.*$/;
-	
-	
+	var regexAHREFmatch = /http.*/;
+	var regexAHREFreplace = /\".*$/;
 	
 	var citedDoc = el.innerHTML;
 
