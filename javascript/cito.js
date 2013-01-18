@@ -471,15 +471,7 @@ function getObject4zookeys(el){
 
 function getObject4plos(el){
 	
-	<!--
-	example reference
-	<li data-refid="9" id="ref9">SteelFisher, G.K., et al., 
-	The public&#039;s response to the 2009 H1N1 influenza pandemic. N Engl J Med, 2010. 362(22):
-		p. e65.<br /><a href="http://www.nejm.org/doi/full/10.1056/NEJMp1005102">Reference Link</a></li>
-		
-		
-		
-	-->
+	
 	
 	
 		var regexAHREFmatch = /http.*/;
