@@ -240,7 +240,10 @@ function addHTML4elife(){
 			 		"</div></div>";
 	    	el[y].innerHTML +=  html;
 	    	
-	}}
+	    console.log(y);
+	    	
+	}
+	}
 	
 }
 
