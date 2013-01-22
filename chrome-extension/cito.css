@@ -27,7 +27,6 @@ span.refTitleHelp {
 	background-color: #b8dbff;
 }
 
-
 .tagSelected {
 	display: inline-block;
 	background-color: #cceecc;
@@ -64,23 +63,7 @@ span.tag:hover {
 	text-decoration: none;
 }
 
-span.tag span {
-	z-index: 10;
-	display: none;
-	padding: 14px 20px;
-	margin-top: -30px;
-	margin-left: 100px;
-	width: 240px;
-	line-height: 16px;
-}
 
-span.tag:hover span {
-	display: inline;
-	position: absolute;
-	color: green;
-	border: 1px solid #DCA;
-	background: whitesmoke;
-}
 
 .callout {
 	z-index: 20;
@@ -90,15 +73,6 @@ span.tag:hover span {
 	left: -12px;
 }
 
-/*CSS3 extras*/
-span.tag span {
-	border-radius: 4px;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-	-moz-box-shadow: 5px 5px 8px #CCC;
-	-webkit-box-shadow: 5px 5px 8px #CCC;
-	box-shadow: 5px 5px 8px #CCC;
-}
 
 span.tagSelected {
 	outline: none;
@@ -113,31 +87,40 @@ span.tagSelected:hover {
 	text-decoration: none;
 }
 
+
+
+
+span.tag span {
+	z-index: 10;
+	display: none;
+	padding: 14px 20px;
+	margin-top: -30px;
+	margin-left: 55px;
+	width: 240px;
+	line-height: 16px;
+}
+
+/*CSS3 extras*/
+span.tag span {
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-box-shadow: 5px 5px 8px #CCC;
+	-webkit-box-shadow: 5px 5px 8px #CCC;
+	box-shadow: 5px 5px 8px #CCC;
+}
+
 span.tagSelected span {
 	z-index: 10;
 	display: none;
 	padding: 14px 20px;
 	margin-top: -30px;
-	margin-left: 28px;
+	margin-left: 55px;
 	width: 240px;
 	line-height: 16px;
 }
 
-span.tagSelected:hover span {
-	display: inline;
-	position: absolute;
-	color: green;
-	border: 1px solid #DCA;
-	background: whitesmoke;
-}
 
-.callout {
-	z-index: 20;
-	position: absolute;
-	top: 30px;
-	border: 0;
-	left: -12px;
-}
 
 /*CSS3 extras*/
 span.tagSelected span {
@@ -149,14 +132,46 @@ span.tagSelected span {
 	box-shadow: 5px 5px 8px #CCC;
 }
 
+span.tag:hover span {
+	display: inline;
+	position: absolute;
+	color: green;
+	border: 1px solid #DCA;
+	background: whitesmoke;
+}
+
+span.tagSelected:hover span {
+	display: inline;
+	position: absolute;
+	color: green;
+	border: 1px solid #DCA;
+	background: whitesmoke;
+}
+
+
+.callout {
+	z-index: 20;
+	position: absolute;
+	top: 30px;
+	border: 0;
+	left: -12px;
+}
+
+
 .otherReasons { 
 	z-index: 10;
 	display: none;
 }
 
 .otherReasonsDisplay {
-	display: inline;
+	display: inline;	
 }
+
+
+
+
+
+
 
 .tblannotate {
 	width: 100%;
