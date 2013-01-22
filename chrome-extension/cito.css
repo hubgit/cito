@@ -24,8 +24,9 @@ span.refTitleHelp {
 }
 
 .tag:hover {
-	background-color: #cceebb;
+	background-color: #b8dbff;
 }
+
 
 .tagSelected {
 	display: inline-block;

@@ -358,7 +358,7 @@ function spanCITO(arrCITO, obj){
 			  if (property == 'OTHER REASON') {
 				  var html = html + "<span id='otherreason' class='tag'  " +
 				  		"onClick='if (document.getElementById(&quot;otherReasons" + ref +"&quot;).className == \"otherReasonsDisplay\") {(document.getElementById(&quot;otherReasons" + ref + "&quot;).className=\"otherReasons\");} else if  ( document.getElementById(&quot;otherReasons" + ref + "&quot;).className == \"otherReasons\") { (document.getElementById(&quot;otherReasons" + ref + "&quot;).className = \"otherReasonsDisplay\");}'><div id='show-other' onClick='if (this.innerHTML == &quot;SHOW OTHER REASONS&quot;){this.innerHTML = &quot;HIDE OTHER REASONS&quot; } else {this.innerHTML= &quot;SHOW OTHER REASONS&quot;}'>SHOW OTHER REASONS</div>" +
-				  				"<span>Click here to display or hide other reasons</span></span>";	  
+				  				"<span style='margin-left:180px;'>Click here to display or hide other reasons</span></span>";	  
 				  
 			  }
 			  else {
