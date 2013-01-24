@@ -20,6 +20,8 @@ $predicate = $arr[4];
 $object = $arr[5];
 $extid = $arr[6];
 
+$extensionid = extid();
+
 if ($extid != $extensionid){ print "invalid request"; exit;}
 
 $con = dbconn();
