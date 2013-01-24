@@ -291,7 +291,7 @@ function getObject4pubmed(obj){
 		 var object = citedDoc.match(regexPUBMEDmatch) + "";
 		 // extract identifier from pubmed link
 		 var object = object.replace(regexPUBMEDreplace, "");
-		 var object = "<http://www.ncbi.nlm.nih.gov" + object + "> ";
+		 var object = "<http://www.ncbi.nlm.nih.gov" + object + ">";
 		 
 		 
 	 }
@@ -299,7 +299,7 @@ function getObject4pubmed(obj){
 	 
 		 var object = citedDoc.match(regexPMCmatch) + "";
 		 var object = object.replace(regexPMCreplace, "");
-		 var object = "<http://www.ncbi.nlm.nih.gov" + object + "> ";
+		 var object = "<http://www.ncbi.nlm.nih.gov" + object + ">";
 		 
 	 }
 	 
