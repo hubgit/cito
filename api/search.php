@@ -18,19 +18,18 @@ mysql_select_db("cito", $con);
 $sql = getSQL($subject, $userid, $format, $count, $object, $predicate);
 
 
-print $sql . "\n\n";
-      
+
 $result = mysql_query($sql);
 if (!$result){
          die('Invalid query: ' . mysql_error());
-}   
-    
+}
+
 getOutput($result, $format);
 
 // CLOSE DATABASE
 mysql_free_result($result);
 mysql_close($con);
-        
+
 ?>
 
 
@@ -39,8 +38,10 @@ mysql_close($con);
 
 function getSQL($subject, $userid, $format, $count, $object, $predicate){
         if ($count != "") {
+
 $sql =
-"Select userid, timestamp, action, subject, predicate, object  from triples where subject = '$subject' and predicate = '$predicate' and object = '$object' ;";
+"Select userid, timestamp,  subject, predicate, object  from triples where subject = '$subject' and predicate = '$predicate' and object = '$object' group by subject having count(subject) > $count;
+";
 return $sql;
         }
 
@@ -49,22 +50,23 @@ return $sql;
 
 if (($subject == 'all') && ($userid == 'all')){
         // SELECT ALL ENTRIES BY ALL AUTHORS
-        $sql = "Select userid, timestamp, action, subject, predicate, object from triples  order by timestamp;";
+     $sql = "Select userid, timestamp,  subject, predicate, object from triples  order by timestamp;";
 
 } elseif (($subject == 'all') && ($userid != 'all') )  {
         // SELECT ALL ENTRIES BY A SPECIFIC USER
-        $sql = "Select userid, timestamp, action, subject, predicate, object from triples where userid = '$userid' order by timestamp;";
+        $sql = "Select userid, timestamp,  subject, predicate, object from triples where userid = '$userid'   order by timestamp;";
+
 }
 elseif (($subject != 'all')&& ($userid == 'all')){
         // SELECT ENTRIES FOR A SPECIFIC ARTICLE BY ALL AUTHORS
-        $sql = "Select userid, timestamp, action, subject, predicate, object from triples where subject = '$subject' order by timestamp;";
+        $sql = "Select userid, timestamp,  subject, predicate, object from triples where subject = '$subject'  order by timestamp;";
 }
 elseif (($subject != 'all')&& ($userid != 'all')){
-// SELECT ENTRIES FOR A SPECIFIC ARTICLE BY A SPECIFIC AUTHOR
-        $sql = "Select userid, timestamp, action, subject, predicate, object from triples where subject = '$subject' and userid = '$userid' order by timestamp;";
+        // SELECT ENTRIES FOR A SPECIFIC ARTICLE BY A SPECIFIC AUTHOR
+        $sql = "Select userid, timestamp,  subject, predicate, object from triples where subject = '$subject' and userid = '$userid' order by timestamp;";
 } else {
         // DEFAULT - SELECT ALL ENTRIES BY ALL AUTHORS
-        $sql = "Select userid, timestamp, action, subject, predicate, object from triples  order by timestamp;";
+        $sql = "Select userid, timestamp,  subject, predicate, object from triples  order by timestamp;";
 }
 
 return $sql;
@@ -77,7 +79,7 @@ function getOutput($result, $format){
 if ($format == 'txt') {
         $output = "";
         while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
-                $output .= join("|",$row) ;
+                $output .= join("|",$row) . "\n" ;
         }
         header('Content-type: text/text');
         print $output;
@@ -92,7 +94,6 @@ elseif ($format == 'json') {
 
 "userid":"{$row[0]}",
 "timestamp": "{$row[1]}",
-"action": "{$row[2]}",
 "subject" : "{$row[3]}",
 "predicate" : "{$row[4]}",
 "object" : "{$row[5]}"
@@ -100,19 +101,38 @@ elseif ($format == 'json') {
 
 },
 
-json;
+        json;
                 $cnt +=1;
-	 }
+        }
         header('Content-type: application/json');
         print "{\n" . $output . "\n}" ;
 
 } elseif ($format == 'txtf') {
 
+
+ $output = "";
+        while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
+                $output .= join(" | ",$row) . "\n" ;
+        }
+        header('Content-type: text/text');
+        print $output;
+
+
 } elseif ($format == 'ttl'){
+
+ $output = "";
+        while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
+        
+        	$output .= "{$row[2]} {$row[3]} {$row[4]} . \n"; 
+          
+        }
+        header('Content-type: text/text');
+        print $output;
+
 
 }
 }
 
 
 ?>
-                
+

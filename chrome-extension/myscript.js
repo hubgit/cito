@@ -113,7 +113,7 @@ function spanCITO(arrCITO, obj){
 					 var pred = "<" + predicatePrefix + predicate[property] + ">"; // relation from CiTO
 								 
 					 var object = getObject(obj);
-					 var triple = subject + "|"  + pred + "|" + object + "\n";
+					 var triple =encodeURI(subject) + "|"  + encodeURI(pred) + "|" + encodeURI(object) ;
 					 var id = 'p' + cnt; // span id - used to store selection locally
 					 
 					 var key = window.location.href + id;
@@ -138,14 +138,7 @@ function spanCITO(arrCITO, obj){
 					var html = html + "<span id='" + id + "' desc='"+ triple +"' class='" + cl + "' onClick='if (this.className == \"tagSelected\") {(this.className=\"tag\");} else if  ( this.className == \"tag\") { (this.className = \"tagSelected\");}'>" + property +  "<span>" + description + "</span></span><br/>";	  
 		  
 					 
-					
-					 
-					 
-					 
-					 
-					
-					 
-					 
+				 
 					 
 		  cnt += 1; // increment counter used to assign unique id to each CiTO term span tag
 		  }
@@ -189,9 +182,6 @@ function getObject4elife(el){
 	 
 	
 	
-	
-	
-	
 	var regexDOImatch = /class="elife-reflink-details-doi"><a.*href="http:\/\/dx\.doi\.org.*"\s*target="_blank"\s*>http:\/\/dx\.doi\.org/;
 	var regexDOIreplace = /class="elife-reflink-details-doi"><a.*href="|".*>.*/g;
 	
@@ -225,7 +215,7 @@ function getObject4elife(el){
 		 
 		 // extract identifier from  link
 		 var obj = obj.replace(regexDOIreplace, "");
-		 var obj = "<" + obj + "> ";
+		 var obj = "<" + obj + ">";
 		
 		 
 	 }
@@ -235,7 +225,7 @@ function getObject4elife(el){
 		 
 		
 		 var obj = obj.replace(regexPUBMEDreplace, "");
-		 var obj = "<http://www.ncbi.nlm.nih.gov/pubmed?term=" + obj + "%5Buid%5D> ";
+		 var obj = "<http://www.ncbi.nlm.nih.gov/pubmed?term=" + obj + "%5Buid%5D>";
 		
 	 }
 	 
@@ -244,7 +234,7 @@ function getObject4elife(el){
 		 
 		 
 		 var obj = obj.replace(regexCROSSREFreplace, "");
-		 var obj = "<http://dx.doi.org/" + obj + "> ";
+		 var obj = "<http://dx.doi.org/" + obj + ">";
 		 
 	 }
 	 

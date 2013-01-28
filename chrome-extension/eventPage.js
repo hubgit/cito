@@ -22,7 +22,7 @@ chrome.extension.onMessage.addListener(
 			var dataToSend = new FormData(); // create a new FormData object
 			var xhr = new XMLHttpRequest();
 			
-			xhr.open("POST", 'http://www.miidi.org/metaquery/listen.php');
+			xhr.open("POST", 'http://www.miidi.org/cito/api/listen.php');
 	
 			dataToSend.append('triple',  uniqid + "|" + message + "|" + extensionid); // add data to the object
 			xhr.send(dataToSend);

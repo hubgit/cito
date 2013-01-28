@@ -16,7 +16,7 @@ span.refTitleHelp {
 	display: inline-block;
 	background-color: whitesmoke;
 	font-size: 11px;
-	
+	vertical-align:top;
 	margin:2px;
 	width: 100%;
 	text-align: center;
@@ -34,7 +34,7 @@ span.refTitleHelp {
 	font-size: 11px;
 	margin:2px;
 	width: 100%;
-	
+	vertical-align:top;
 	cursor: pointer;
 	text-align: center;
 }
@@ -186,4 +186,5 @@ span.tagSelected:hover span {
 .tblannotate,td {
 	margin: 0px;
 	border: none !important;
+	vertical-align:top;
 }

@@ -290,12 +290,13 @@ function addEventListeners(){
 				}
 				
 
-				var listen = "http://www.miidi.org/metaquery/listen.php";
+				var listen = "http://www.miidi.org/cito/api/listen.php";
 				var triple =  uniqid + "|" + value2send + "|" + extensionid ;
 				
 
 				 var postData = {url: url, triple: triple};
 				
+				 console.log(postData);
 				
 				 //console.log(url);
 				
@@ -309,7 +310,7 @@ function addEventListeners(){
 					        console.log('success responseData:' + responseData + ' textstatus: ' + textStatus + 'jqXHR:' + jqXHR);
 					    },
 					    error: function (responseData, textStatus, errorThrown) {
-					        console.log('error responseData:' + responseData + ' errorThrown:' + errorThrown + 'textStatus:' + textStatus);
+					        console.log('error responseData:' + responseData + ' errorThrown:' + errorThrown + ' textStatus:' + textStatus);
 					    }
 					});
 					
@@ -368,7 +369,7 @@ function spanCITO(arrCITO, obj){
 					 var pred = "<" + predicatePrefix + predicate[property] + ">"; // relation from CiTO
 								 
 					 var object = getObject(obj);
-					 var triple = subject + "|"  + pred + "|" + object + "\n";
+					 var triple = encodeURI(subject) + "|"  + encodeURI(pred) + "|" + encodeURI(object);
 					 var id = 'p' + cnt; // span id - used to store selection locally
 					 
 					 var key = window.location.href + id;
@@ -445,7 +446,7 @@ function getObject4zookeys(el){
 		 var obj = citedDoc.match(regexAHREFmatch) + "";
 		 // extract identifier from  link
 		 var obj = obj.replace(regexAHREFreplace, "");
-		 var obj = "<http://dx.doi.org/" + obj + "> ";
+		 var obj = "<http://dx.doi.org/" + obj + ">";
 		 	 
 	 }
 	
@@ -487,7 +488,7 @@ function getObject4plos(el){
 		 var obj = citedDoc.match(regexAHREFmatch) + "";
 		 // extract identifier from  link
 		 var obj = obj.replace(regexAHREFreplace, "");
-		 var obj = "<" + obj + "> ";
+		 var obj = "<" + obj + ">";
 		 	 
 	 }
 	
@@ -528,7 +529,7 @@ function getObject4reis(el){
 		 var obj = citedDoc.match(regexAHREFmatch) + "";
 		 // extract identifier from  link
 		 var obj = obj.replace(regexAHREFreplace, "");
-		 var obj = "<" + obj + "> ";
+		 var obj = "<" + obj + ">";
 		 	 
 	 }
 	
@@ -576,16 +577,14 @@ function getObject4elife(el){
 	
 	
 	var citedDoc = el.innerHTML;
-
-	
-	 
+ 
 	 if (citedDoc.match(regexDOImatch) != null){
 		
 		 var obj = citedDoc.match(regexDOImatch) + "";
 		 
 		 // extract identifier from  link
 		 var obj = obj.replace(regexDOIreplace, "");
-		 var obj = "<" + obj + "> ";
+		 var obj = "<" + obj + ">";
 		
 		 
 	 }
@@ -595,7 +594,7 @@ function getObject4elife(el){
 		 
 		
 		 var obj = obj.replace(regexPUBMEDreplace, "");
-		 var obj = "<http://www.ncbi.nlm.nih.gov/pubmed?term=" + obj + "%5Buid%5D> ";
+		 var obj = "<http://www.ncbi.nlm.nih.gov/pubmed?term=" + obj + "%5Buid%5D>";
 		
 	 }
 	 
@@ -604,7 +603,7 @@ function getObject4elife(el){
 		 
 		 
 		 var obj = obj.replace(regexCROSSREFreplace, "");
-		 var obj = "<http://dx.doi.org/" + obj + "> ";
+		 var obj = "<http://dx.doi.org/" + obj + ">";
 		 
 	 }
 	 
