@@ -85,6 +85,22 @@ function cito(){
 
 
 
+function citoHeader(){
+	
+	// HTML used to insert link to allow user to download his/her annotations as a text file
+	var userid = userID();
+	var url = encodeURIComponent(window.location.href);
+	var downloadLink = "http://www.miidi.org/cito/api/search?userid=" + userid;
+	
+	var html = "<br/><div class='cito-header'>" +
+			"<h2>CiTO Annotations</h2>" +
+			"<p>Download your CiTO annotations for <a href='" + downloadLink + "&subject=<" + url +">' target='_new'>this article</a>" +
+			" or <a href='" + downloadLink + "' target='_new'>all articles</a></p></div><br/>";
+	
+	return html;
+	
+}
+
 
 function addHTML4plos(){
 	
@@ -92,6 +108,13 @@ function addHTML4plos(){
 	var referenceList = document.getElementById('references');
 
 	if (referenceList) {
+		
+		// insert link to allow user to download his/her annotations as a text file	
+		var citoheader = citoHeader();
+		
+		referenceList.innerHTML = citoheader + referenceList.innerHTML;
+		
+		
 	// iterate through li tags in reference list
 	var el=referenceList.getElementsByTagName("li");
 	for (var y = 0; y < el.length; y++){
@@ -120,6 +143,13 @@ function addHTML4zookeys(){
 	var referenceList = document.getElementsByClassName('referencesText');
 
 	if (referenceList) {
+		
+		// insert link to allow user to download his/her annotations as a text file	
+		var citoheader = citoHeader();
+		
+		referenceList[0].innerHTML = citoheader + referenceList[0].innerHTML;
+		
+		
 	// iterate through li tags in reference list
 	var el=referenceList[0].getElementsByClassName("referenceRow");
 	for (var y = 0; y < el.length; y++){
@@ -153,6 +183,13 @@ function addHTML4reis(){
 	var referenceList = document.getElementById('references');
 
 	if (referenceList) {
+		
+		// insert link to allow user to download his/her annotations as a text file	
+		var citoheader = citoHeader();
+		
+		referenceList.innerHTML = citoheader + referenceList.innerHTML;
+		
+		
 	// iterate through li tags in reference list
 	var el=referenceList.getElementsByTagName("li");
 	for (var y = 0; y < el.length; y++){
@@ -179,6 +216,15 @@ function addHTML4pubmed(){
 	
 	
 	var referenceList = document.getElementById("reference-list");
+	
+	
+	// insert link to allow user to download his/her annotations as a text file	
+	var citoheader = citoHeader();
+	
+	referenceList.innerHTML = citoheader + referenceList.innerHTML;
+	
+	
+	
 	// iterate through div tags in page
 	var div=referenceList.getElementsByTagName("div");
 	for (var y = 0; y < div.length; y++){
@@ -224,6 +270,14 @@ function addHTML4elife(){
 	var referenceList = document.getElementById('references');
 
 	if (referenceList) {
+		
+		// insert link to allow user to download his/her annotations as a text file	
+		var citoheader = citoHeader();
+		
+		referenceList.innerHTML = citoheader + referenceList.innerHTML;
+		
+		
+		
 	// iterate through li tags in reference list
 	var el=referenceList.getElementsByTagName("article");
 
@@ -240,7 +294,7 @@ function addHTML4elife(){
 			 		"</div></div>";
 	    	el[y].innerHTML +=  html;
 	    	
-	    console.log(y);
+	    //console.log(y);
 	    	
 	}
 	}
@@ -277,30 +331,21 @@ function addEventListeners(){
 				var value2send = date + "|" + action + "|" + title;
 				var xhr = new XMLHttpRequest(); // supported by all modern browsers including Chrome, Opera, Safari, Firefox, IE7+ - not supported by IE 6 and earlier				
 				
-				// see if uniqid has been created for user
-				if (localStorage.getItem('uniqid') === null){
-					// if not, create unique id and store in local store
-					var uniqid = uniqueid();
-					localStorage.setItem('uniqid', uniqid);
-					
-					
-				} else {
-					// if yes, retrieve value
-					var uniqid = localStorage.getItem('uniqid')	;
-				}
 				
-
+				var userid = userID();
+				
+				
 				var listen = "http://www.miidi.org/cito/api/listen.php";
-				var triple =  uniqid + "|" + value2send + "|" + extensionid ;
+				var triple =  userid + "|" + value2send + "|" + extensionid ;
 				
 
 				 var postData = {url: url, triple: triple};
 				
-				 console.log(postData);
+				 //console.log(postData);
 				
 				 //console.log(url);
 				
-				 $.ajax({
+				 jQuery.ajax({
 					    type: 'POST',
 					    url: listen,
 					    crossDomain: true,
@@ -335,7 +380,25 @@ function addEventListeners(){
 	
 	
 	
+function userID(){
 	
+	// see if uniqid has been created for user
+	if (localStorage.getItem('uniqid') === null){
+		// if not, create unique id and store in local store
+		var userid = uniqueid();
+		localStorage.setItem('uniqid', uniqid);
+		
+		
+	} else {
+		// if yes, retrieve value
+		var userid = localStorage.getItem('uniqid')	;
+	}
+	
+	
+	
+	return userid;
+	
+}	
 	
 
 	 

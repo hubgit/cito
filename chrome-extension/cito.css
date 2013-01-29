@@ -8,6 +8,13 @@ span.refTitle {
 	font-family: arial
 }
 
+.cito-header {
+	
+background-color:whitesmoke !important;
+padding:5px;
+	
+}
+
 span.refTitleHelp {
 	font-weight: normal;
 }
