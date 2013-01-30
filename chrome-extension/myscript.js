@@ -7,6 +7,9 @@ var cnt = 0; // counter used to assign unique id to each CiTO term span tag
 var ref = 0; // counter to track reference number
 
 var url = window.location.href;
+url = url.replace(/#.*/, '');
+url = encodeURIComponent(url);
+
 var  subject = "<" + url + ">"  ;   // citing research article
 var predicatePrefix = "http://purl.org/spar/cito/";
 var desc = desc(); // array of descriptions for CiTO
@@ -116,7 +119,10 @@ function spanCITO(arrCITO, obj){
 					 var triple =encodeURI(subject) + "|"  + encodeURI(pred) + "|" + encodeURI(object) ;
 					 var id = 'p' + cnt; // span id - used to store selection locally
 					 
-					 var key = window.location.href + id;
+					 var url = window.location.href;
+						url = url.replace(/#.*/, '');
+						
+					 var key = url + id;
 					 
 					 
 					 var isSet = localStorage.getItem(key);
@@ -318,16 +324,12 @@ function save(id, value) {
 	  }
 	  // Save it using the HTML5 local storage API.
 	  
-	  
 	  var url = window.location.href;
+	  url = url.replace(/#.*/, '');
 	  var key = url + id;
-	  
-	  
+	   
 	  localStorage.setItem(key,value);
 	  
-
-	
-
 	}
 
 
@@ -502,6 +504,12 @@ function addHTML4plos(){
 	var referenceList = document.getElementById('references');
 
 	if (referenceList) {
+		// insert link to allow user to download his/her annotations as a text file	
+		var citoheader = citoHeader();
+		
+		referenceList.innerHTML = citoheader + referenceList.innerHTML;
+		
+		
 	// iterate through li tags in reference list
 	var el=referenceList.getElementsByTagName("li");
 	for (var y = 0; y < el.length; y++){
@@ -526,6 +534,13 @@ function addHTML4plos(){
 function addHTML4pubmed(){
 	
 	var referenceList = document.getElementById("reference-list");
+	
+	// insert link to allow user to download his/her annotations as a text file	
+	var citoheader = citoHeader();
+	
+	referenceList.innerHTML = citoheader + referenceList.innerHTML;
+	
+	
 	// iterate through div tags in page
 	var div=referenceList.getElementsByTagName("div");
 	for (var y = 0; y < div.length; y++){
@@ -573,12 +588,15 @@ function addHTML4pubmed(){
 function addHTML4elife(){
 	
 
-	
-
-
 	var referenceList = document.getElementById('references');
 
 	if (referenceList) {
+		
+		// insert link to allow user to download his/her annotations as a text file	
+		var citoheader = citoHeader();
+		
+		referenceList.innerHTML = citoheader + referenceList.innerHTML;
+		
 	// iterate through li tags in reference list
 	var el=referenceList.getElementsByTagName("article");
 
@@ -607,7 +625,6 @@ function addHTML4elife(){
 function getObject4plos(el){
 	
 
-	
 	var regexAHREFmatch = /http.*/;
 	var regexAHREFreplace = /\".*$/;
 	
@@ -630,12 +647,51 @@ function getObject4plos(el){
 				var obj = '"'  + obj + '"';
 		 } else {
 			 	var obj = '""'; 
-		 }
-		
+		 }	
 	 }
-	
 	return obj;
+}
+
+
+function citoHeader(){
 	
+	// HTML used to insert link to allow user to download his/her annotations as a text file
+	var userid = userID();
+	
+	var url = window.location.href;
+	url = url.replace(/#.*/, '');
+	url = encodeURIComponent(url);
+	
+	var downloadLink = "http://www.miidi.org/cito/api/search?userid=" + userid;
+	
+	var html = "<br/><div class='cito-header'>" +
+			"<h2>CiTO Annotations</h2>" +
+			"<p>Download your CiTO annotations for <a href='" + downloadLink + "&subject=<" + url +">' target='_new'>this article</a>" +
+			" or <a href='" + downloadLink + "' target='_new'>all articles</a></p></div><br/>";
+	
+	return html;
 	
 }
 
+
+
+function userID(){
+	
+	// see if uniqid has been created for user
+	if (localStorage.getItem('uniqid') === null){
+		// if not, create unique id and store in local store
+		var userid = uniqueid();
+		localStorage.setItem('uniqid', uniqid);
+		
+		
+	} else {
+		// if yes, retrieve value
+		var userid = localStorage.getItem('uniqid')	;
+	}
+	
+	
+	
+	return userid;
+	
+}	
+	

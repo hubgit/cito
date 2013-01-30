@@ -3,16 +3,7 @@
 var extensionid = "O7WRSFR9ABNOWYFMHRFT4RXLF";
 
 
-//see if uniqid has been created for user
-if (localStorage.getItem('uniqid') === null){
-	// if not, create unique id and store in local store
-	var uniqid = uniqueid();
-	localStorage.setItem('uniqid', uniqid);
-	
-} else {
-	// if yes, retrieve value
-	var uniqid = localStorage.getItem('uniqid')	;
-}
+var userid = userID();
 
 
 chrome.extension.onMessage.addListener(
@@ -24,7 +15,7 @@ chrome.extension.onMessage.addListener(
 			
 			xhr.open("POST", 'http://www.miidi.org/cito/api/listen.php');
 	
-			dataToSend.append('triple',  uniqid + "|" + message + "|" + extensionid); // add data to the object
+			dataToSend.append('triple',  userid + "|" + message + "|" + extensionid); // add data to the object
 			xhr.send(dataToSend);
 			/*
 			 xhr.addEventListener("load", function(e) {
@@ -56,6 +47,26 @@ function uniqueid(){
 }
 
 
+
+function userID(){
+	
+	// see if uniqid has been created for user
+	if (localStorage.getItem('uniqid') === null){
+		// if not, create unique id and store in local store
+		var userid = uniqueid();
+		localStorage.setItem('uniqid', uniqid);
+		
+		
+	} else {
+		// if yes, retrieve value
+		var userid = localStorage.getItem('uniqid')	;
+	}
+	
+	
+	
+	return userid;
+	
+}	
 
 
 

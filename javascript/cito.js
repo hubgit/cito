@@ -7,6 +7,8 @@ var ref = 0; // counter to track reference number
 
 
 var url = window.location.href;
+url = url.replace(/#.*/, ''); // remove anchor tag from url
+
 var  subject = "<" + url + ">"  ;   // citing research article
 
 
@@ -89,7 +91,11 @@ function citoHeader(){
 	
 	// HTML used to insert link to allow user to download his/her annotations as a text file
 	var userid = userID();
-	var url = encodeURIComponent(window.location.href);
+	
+	var url = window.location.href;
+	url = url.replace(/#.*/, '');
+	url = encodeURIComponent(url);
+	
 	var downloadLink = "http://www.miidi.org/cito/api/search?userid=" + userid;
 	
 	var html = "<br/><div class='cito-header'>" +
@@ -277,7 +283,6 @@ function addHTML4elife(){
 		referenceList.innerHTML = citoheader + referenceList.innerHTML;
 		
 		
-		
 	// iterate through li tags in reference list
 	var el=referenceList.getElementsByTagName("article");
 
@@ -435,7 +440,10 @@ function spanCITO(arrCITO, obj){
 					 var triple = encodeURI(subject) + "|"  + encodeURI(pred) + "|" + encodeURI(object);
 					 var id = 'p' + cnt; // span id - used to store selection locally
 					 
-					 var key = window.location.href + id;
+					 var url = window.location.href;
+						url = url.replace(/#.*/, '');
+						
+					 var key = url + id;
 					 
 					 
 					 var isSet = localStorage.getItem(key);
@@ -749,8 +757,9 @@ function save(id, value) {
 	  }
 	  // Save it using the Chrome extension storage API.
 	  
-	  
 	  var url = window.location.href;
+	  	url = url.replace(/#.*/, '');
+		
 	  var key = url + id;
 	  
 	  
