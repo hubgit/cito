@@ -1,7 +1,7 @@
 
 
 {
-  	"name": "Annotate journal article citations with CiTO",
+  	"name": "Annotate journal citations with CiTO",
   	"author": "Tanya Gray Jones",
    	"version": "2.28",
   	"manifest_version": 2,

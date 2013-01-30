@@ -2,7 +2,7 @@
 include("./inc/dbconn.php");
 
 // PARAMETERS
-$subject = (isset($_REQUEST['subject'])) ? urldecode($_REQUEST['subject']) : "all";
+$subject = (isset($_REQUEST['subject'])) ? $_REQUEST['subject'] : "all";
 $userid = (isset($_REQUEST['userid'])) ? $_REQUEST['userid'] : "all";
 $format = (isset($_REQUEST['format'])) ? $_REQUEST['format'] :"txt";
 $count = (isset($_REQUEST['count'])) ? $_REQUEST['count'] : "";
