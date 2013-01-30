@@ -7,8 +7,7 @@ var cnt = 0; // counter used to assign unique id to each CiTO term span tag
 var ref = 0; // counter to track reference number
 
 var url = window.location.href;
-url = url.replace(/#.*/, '');
-url = encodeURIComponent(url);
+url = url.split('#')[0];
 
 var  subject = "<" + url + ">"  ;   // citing research article
 var predicatePrefix = "http://purl.org/spar/cito/";
@@ -52,7 +51,7 @@ function addEventListeners(){
 
 	// add eventlistener - onclick to save value to external file
 	var annotate = document.getElementsByClassName("cito-annotate");
-
+	var userid = userID();
 
 	for (var g = 0; g < annotate.length; g++) {
 		var span = annotate[g].getElementsByTagName("span");
@@ -73,7 +72,7 @@ function addEventListeners(){
 					save(this.getAttribute('id') , '1');
 				}
 				
-				var value2send = date + "|" + action + "|" + title;
+				var value2send = userid + "|" + date + "|" + action + "|" + title;
 
 				chrome.extension.sendMessage({value: value2send}, function(response) {
 					// console.log(response.reply); 
@@ -119,10 +118,7 @@ function spanCITO(arrCITO, obj){
 					 var triple =encodeURI(subject) + "|"  + encodeURI(pred) + "|" + encodeURI(object) ;
 					 var id = 'p' + cnt; // span id - used to store selection locally
 					 
-					 var url = window.location.href;
-						url = url.replace(/#.*/, '');
-						
-					 var key = url + id;
+					 var key = window.location.href + id;
 					 
 					 
 					 var isSet = localStorage.getItem(key);
@@ -324,12 +320,17 @@ function save(id, value) {
 	  }
 	  // Save it using the HTML5 local storage API.
 	  
+	  
 	  var url = window.location.href;
-	  url = url.replace(/#.*/, '');
+	  url = url.split('#')[0];
 	  var key = url + id;
-	   
+	  
+	  
 	  localStorage.setItem(key,value);
 	  
+
+	
+
 	}
 
 
@@ -504,11 +505,11 @@ function addHTML4plos(){
 	var referenceList = document.getElementById('references');
 
 	if (referenceList) {
+		
 		// insert link to allow user to download his/her annotations as a text file	
-		var citoheader = citoHeader();
+		var citoheader =  citoHeader();
 		
 		referenceList.innerHTML = citoheader + referenceList.innerHTML;
-		
 		
 	// iterate through li tags in reference list
 	var el=referenceList.getElementsByTagName("li");
@@ -536,10 +537,9 @@ function addHTML4pubmed(){
 	var referenceList = document.getElementById("reference-list");
 	
 	// insert link to allow user to download his/her annotations as a text file	
-	var citoheader = citoHeader();
+	var citoheader =  citoHeader();
 	
 	referenceList.innerHTML = citoheader + referenceList.innerHTML;
-	
 	
 	// iterate through div tags in page
 	var div=referenceList.getElementsByTagName("div");
@@ -588,14 +588,18 @@ function addHTML4pubmed(){
 function addHTML4elife(){
 	
 
+	
+
+
 	var referenceList = document.getElementById('references');
 
 	if (referenceList) {
 		
 		// insert link to allow user to download his/her annotations as a text file	
-		var citoheader = citoHeader();
+		var citoheader =  citoHeader();
 		
 		referenceList.innerHTML = citoheader + referenceList.innerHTML;
+		
 		
 	// iterate through li tags in reference list
 	var el=referenceList.getElementsByTagName("article");
@@ -625,6 +629,7 @@ function addHTML4elife(){
 function getObject4plos(el){
 	
 
+	
 	var regexAHREFmatch = /http.*/;
 	var regexAHREFreplace = /\".*$/;
 	
@@ -647,9 +652,35 @@ function getObject4plos(el){
 				var obj = '"'  + obj + '"';
 		 } else {
 			 	var obj = '""'; 
-		 }	
+		 }
+		
 	 }
+	
 	return obj;
+	
+	
+}
+
+
+
+
+
+
+function userID(){
+	
+	if (localStorage.getItem('uniqid') === null){
+		// if not, create unique id and store in local store
+		var uniqid = uniqueid();
+		localStorage.setItem('uniqid', uniqid);
+
+	} else {
+		// if yes, retrieve value
+		var uniqid = localStorage.getItem('uniqid')	;
+	}
+	
+	return uniqid;
+	
+	
 }
 
 
@@ -659,7 +690,7 @@ function citoHeader(){
 	var userid = userID();
 	
 	var url = window.location.href;
-	url = url.replace(/#.*/, '');
+	url = url.split('#')[0];
 	url = encodeURIComponent(url);
 	
 	var downloadLink = "http://www.miidi.org/cito/api/search?userid=" + userid;
@@ -674,24 +705,17 @@ function citoHeader(){
 }
 
 
+function uniqueid(){
+    // always start with a letter (for DOM friendlyness)
+    var idstr=String.fromCharCode(Math.floor((Math.random()*25)+65));
+    do {                
+        // between numbers and characters (48 is 0 and 90 is Z (42-48 = 90)
+        var ascicode=Math.floor((Math.random()*42)+48);
+        if (ascicode<58 || ascicode>64){
+            // exclude all chars between : (58) and @ (64)
+            idstr+=String.fromCharCode(ascicode);    
+        }                
+    } while (idstr.length<32);
 
-function userID(){
-	
-	// see if uniqid has been created for user
-	if (localStorage.getItem('uniqid') === null){
-		// if not, create unique id and store in local store
-		var userid = uniqueid();
-		localStorage.setItem('uniqid', uniqid);
-		
-		
-	} else {
-		// if yes, retrieve value
-		var userid = localStorage.getItem('uniqid')	;
-	}
-	
-	
-	
-	return userid;
-	
-}	
-	
+    return (idstr);
+}
