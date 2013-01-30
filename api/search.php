@@ -12,14 +12,18 @@ $query = (isset($_REQUEST['query'])) ? $_REQUEST['query'] : '';
 $count = (isset($_REQUEST['count'])) ? $_REQUEST['count'] : '';
 
 
+$sql = getSQL($subject, $userid, $format,  $object, $predicate, $query, $count);
+ 
+
+
+
+
 // DATABASE CONNECTION
 $con = dbconn();
 
 mysql_select_db("cito", $con);
 
 
-$sql = getSQL($subject, $userid, $format,  $object, $predicate, $query, $count);
- 
 $result = mysql_query($sql);
 if (!$result){
          die('Invalid query: ' . mysql_error());
@@ -40,12 +44,16 @@ function getSQL($subject, $userid, $format,  $object, $predicate, $query, $count
 	
 	if ($query == 'endorsed') {
 		
+		if (is_numeric($count) == false) { $count = 0;}
+		
 		$sql = "select distinct subject, predicate, object from triples where subject
 	 in (select subject from triples group by subject having count(subject) >= $count)
 	  and predicate in (select predicate from 
 	triples group by predicate having count(predicate) >= $count)
 	 and object in (select object from triples group by object having count(object) >= $count);";
 	
+		
+		
 return $sql;		
 	}
 	
@@ -89,18 +97,19 @@ if ($format == 'txt') {
 elseif ($format == 'json') {
         $output = "";
         $cnt = 1;
+        
+        $num_rows = mysql_num_rows($result);
+
         while ($row = mysql_fetch_array($result, MYSQL_NUM)) {
 
         if ($query == 'endorsed'){
                  $output .=
 <<<json
 {
-
 "subject" : "{$row[0]}",
 "predicate" : "{$row[1]}",
 "object" : "{$row[2]}"
-
-},
+}
 json;
 
    } else {
@@ -112,11 +121,14 @@ json;
 "subject" : "{$row[2]}",
 "predicate" : "{$row[3]}",
 "object" : "{$row[4]}"
-},
+}
 json;
 
   }
-        $cnt +=1;
+
+  if ($cnt != $num_rows) { $output .= ",\n"; }
+  
+  $cnt +=1;
         }
         header('Content-type: application/json');
         print "{\n" . $output . "\n}" ;
