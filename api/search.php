@@ -104,14 +104,14 @@ elseif ($format == 'json') {
 json;
 
    } else {
-                $output .=
+          $output .=
 <<<json
 {
 "userid":"{$row[0]}",
 "timestamp": "{$row[1]}",
-"subject" : "{$row[3]}",
-"predicate" : "{$row[4]}",
-"object" : "{$row[5]}"
+"subject" : "{$row[2]}",
+"predicate" : "{$row[3]}",
+"object" : "{$row[4]}"
 },
 json;
 
