@@ -50,7 +50,7 @@ function getSQL($subject, $userid, $format,  $object, $predicate, $query, $count
 	 in (select subject from triples group by subject having count(subject) >= $count)
 	  and predicate in (select predicate from 
 	triples group by predicate having count(predicate) >= $count)
-	 and object in (select object from triples group by object having count(object) >= $count);";
+	 and object in (select object from triples group by object having count(object) >= $count) order by subject;";
 	
 		
 		
@@ -62,23 +62,23 @@ return $sql;
 
 if (($subject == 'all') && ($userid == 'all')){
         // SELECT ALL ENTRIES BY ALL AUTHORS
-     $sql = "Select userid, timestamp,  subject, predicate, object from triples  order by timestamp;";
+     $sql = "Select userid, timestamp,  subject, predicate, object from triples  order by subject;";
 
 } elseif (($subject == 'all') && ($userid != 'all') )  {
         // SELECT ALL ENTRIES BY A SPECIFIC USER
-        $sql = "Select userid, timestamp,  subject, predicate, object from triples where userid = '$userid'   order by timestamp;";
+        $sql = "Select userid, timestamp,  subject, predicate, object from triples where userid = '$userid'   order by subject;";
 
 }
 elseif (($subject != 'all')&& ($userid == 'all')){
         // SELECT ENTRIES FOR A SPECIFIC ARTICLE BY ALL AUTHORS
-        $sql = "Select userid, timestamp,  subject, predicate, object from triples where subject = '$subject'  order by timestamp;";
+        $sql = "Select userid, timestamp,  subject, predicate, object from triples where subject = '$subject'  order by subject;";
 }
 elseif (($subject != 'all')&& ($userid != 'all')){
         // SELECT ENTRIES FOR A SPECIFIC ARTICLE BY A SPECIFIC AUTHOR
-        $sql = "Select userid, timestamp,  subject, predicate, object from triples where subject = '$subject' and userid = '$userid' order by timestamp;";
+        $sql = "Select userid, timestamp,  subject, predicate, object from triples where subject = '$subject' and userid = '$userid' order by subject;";
 } else {
         // DEFAULT - SELECT ALL ENTRIES BY ALL AUTHORS
-        $sql = "Select userid, timestamp,  subject, predicate, object from triples  order by timestamp;";
+        $sql = "Select userid, timestamp,  subject, predicate, object from triples  order by subject;";
 }
 return $sql;
 
