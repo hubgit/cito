@@ -391,7 +391,7 @@ function userID(){
 	if (localStorage.getItem('uniqid') === null){
 		// if not, create unique id and store in local store
 		var userid = uniqueid();
-		localStorage.setItem('uniqid', uniqid);
+		localStorage.setItem('uniqid', userid);
 		
 		
 	} else {
