@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>CiTO Visualisation</title>
+
+<!-- CSS Files -->
+<link type="text/css" href="./css/base.css" rel="stylesheet" />
+<link type="text/css" href="./css/RGraph.css" rel="stylesheet" />
+
+<!--[if IE]><script language="javascript" type="text/javascript" src="../../Extras/excanvas.js"></script><![endif]-->
+
+<!-- JIT Library File -->
+<script language="javascript" type="text/javascript" src="./jit/jit.js"></script>
+
+<!-- Example File -->
+<script language="javascript" type="text/javascript" src="./cito.js"></script>
+
+
+<link href="./inc/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+ <link href="./inc/bootstrap/css/bootstrap-responsive.css" rel="stylesheet"/>
+ <script src="http://code.jquery.com/jquery.js"></script>
+ <script src="./inc/bootstrap/js/bootstrap.min.js"></script>
+<style>
+
+
+
+
+#inner-details {
+background-color:#FFFBFF;
+font:10px;
+height:200px;
+}
+
+
+#subject {
+
+width:100%;
+height:500px;
+background-color:silver;
+border:solid 1px black;
+
+}
+
+#object {
+
+width:100%;
+height:500px;
+background-color:silver;
+
+border:solid 1px black;
+}
+
+
+td {
+vertical-align:top;
+margin:30px;
+}
+
+
+iframe {
+
+width:100%;
+height:400px;
+border:0px;
+}
+
+
+.tip {
+width:auto;
+
+}
+
+
+.subtitle {
+
+font: 13px;
+font-weight:bold;
+
+}
+
+
+#infovis {
+background-color:whitesmoke;
+border:solid 1px black;
+
+}
+
+
+</style>
+</head>
+
+<body onload="init();">
+
+<h1>CiTO visualisation</h1>
+
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span5">
+     <div id="infovis"></div>
+      <div id="log"></div>
+       <div id="desc"></div>
+      <!--Sidebar content-->
+    </div>
+    <div class="span6">
+      <!--Body content-->
+     
+<div id="subject"><h2>Citing article</h2><p id='subject-url'></p><iframe id="framesubject"></iframe></div>
+<div id="inner-details" style='background-color:whitesmoke'></div>
+    <div id="object" ><h2>Cited article</h2><p id='object-url'></p><iframe id="frameobject"></iframe></div>   
+    </div>
+  </div>
+</div>
+
+
+
+/*
+
+
+
+
+
+
+
+</body>
+
+<script language="javascript">
+
+
+function displayCito(){
+
+
+arrayPredicates = predicate();
+arrayDescription = desc();
+
+var html = "<div class='subtitle'>CiTO Properties</div><ul>";
+
+var arrayTitles = [];
+
+for (var title in arrayPredicates) {
+	arrayTitles.push(title);
+}
+arrayTitles.sort(); // put in alphabetical order
+
+for (var x in arrayTitles) {
+	var title = arrayTitles[x];
+	
+	var description = arrayDescription[title]; 
+
+html += "<li><b>" + title +  "</b> " + description + "</li>"; 
+}
+
+html += "</ul>";
+
+return html;
+
+}
+
+
+function desc() {
+	
+
+
+	var desc = new Array();
+	desc["cites as authority"] = "The citing entity cites the cited entity as one that provides an authoritative description or definition of the subject under discussion.";
+	desc["cites for information"]= "The citing entity cites the cited entity as a source of information on the subject under discussion.";
+	desc["corrects"]= "The citing entity corrects statements, ideas or conclusions presented in the cited entity.";
+	desc["critiques"]= "The citing entity critiques statements, ideas or conclusions presented in the cited entity.";
+	desc["discusses"]= "The citing entity discusses statements, ideas or conclusions presented in the cited entity.";
+	desc["extends"]= "The citing entity extends facts, ideas or understandings presented in the cited entity.";
+	desc["obtains background from"]= "The citing entity obtains background information from the cited entity.";
+	desc["reviews"]= "The citing entity reviews statements, ideas or conclusions presented in the cited entity.";
+	desc["updates"]= "The citing entity updates statements, ideas, hypotheses or understanding presented in the cited entity.";
+	desc["uses data from"]= "The citing entity describes work that uses data presented in the cited entity.";
+	desc["uses method in"]= "The citing entity describes work that uses a method detailed in the cited entity.";
+
+
+	desc["agrees with"] = "The citing entity agrees with statements, ideas or conclusions presented in the cited entity."; 
+	desc["cites as data source"] = "The citing entity cites the cited entity as source of data."; 
+	desc["cites as evidence"] = "The citing entity cites the cited entity as source of factual evidence for statements it contains."; 
+	desc["cites as metadata document"] = "The citing entity cites the cited entity as being the container of metadata describing the citing entity."; 
+	desc["cites as recommended reading"] = "The citing entity cites the cited entity as an item of recommended reading. This property can be used, for example, to describe references in a lecture reading list, where the cited references are relevant to the general topic of the lecture, but might not be individually cited within the text of the lecture. Similarly, it could be used to describe items in a 'Suggested further reading' list at the end of a book chapter."; 
+	desc["cites as related"] = "The citing entity cites the cited entity as one that is related."; 
+	desc["cites as source document"] = "The citing entity cites the cited entity as being the entity from which the citing entity is derived, or about which the citing entity contains metadata."; 
+	desc["compiles"] = "The citing entity is used to create or compile the cited entity.";   
+	desc["confirms"] = "The citing entity confirms facts, ideas or statements presented in the cited entity.";
+	desc["contains assertion from"] = "The citing entity contains a statement of fact or a logical assertion (or a collection of such facts and/or assertions) originally present in the cited entity. This object property is designed to be used to relate a separate abstract, summary or nanopublication to the cited entity upon which it is based.";
+
+	desc["credits"] = "The citing entity acknowledges contributions made by the cited entity."; 
+	desc["derides"] = "The citing entity express contempt for the cited entity.";   
+	desc["disagrees with"] = "The citing entity disagrees with statements, ideas or conclusions presented in the cited entity."; 
+	desc["disputes"] = "The citing entity disputes statements, ideas or conclusions presented in the cited entity.";   
+	desc["documents"] = "The citing entity documents information about the cited entity."; 
+	desc["gives background to"] = "The cited entity provides background information for the citing entity.";   
+	desc["gives support to"] = "The cited entity provides intellectual or factual support for the citing entity.";  
+	desc["has reply"] = "The cited entity evokes a reply from the citing entity.";
+	desc["includes excerpt from"] = "The citing entity includes one or more excerpts from the cited entity.";   
+	desc["includes quotation from"] = "The citing entity includes one or more quotations from the cited entity."; 
+	desc["qualifies"] = "The citing entity qualifies or places conditions or restrictions upon statements, ideas or conclusions presented in the cited entity.";   
+	desc["refutes"] = "The citing entity refutes statements, ideas or conclusions presented in the cited entity.";   
+	desc["replies to"] = "The citing entity replies to statements, ideas or criticisms presented in the cited entity.";   
+	desc["retracts"] = "The citing entity constitutes a formal retraction of the cited entity.";  
+	desc["ridicules"] = "The citing entity ridicules the cited entity or aspects of its contents.";   
+	desc["shares authors with"] = "The citing entity has at least one author in common with the cited entity.";   
+	desc["supports"] = "The citing entity provides intellectual or factual support for statements, ideas or conclusions presented in the cited entity."; 
+	desc["uses conclusions from"] = "The citing entity describes work that uses conclusions presented in the cited entity.";
+
+	
+	return desc;
+
+}
+
+
+function predicate(){
+	
+	
+
+	var predicate = new Array();
+
+	predicate["agrees with"] = "agreesWith"; 
+
+	predicate["cites as authority"] = "citesAsAuthority";
+	predicate["cites for information"]= "citesForInformation";
+	predicate["corrects"]= "corrects";
+	predicate["critiques"]= "critiques";
+	predicate["discusses"]= "discusses";
+	predicate["extends"]= "extends";
+	predicate["obtains background from"]= "obtainsBackgroundFrom";
+	predicate["reviews"]= "reviews";
+	predicate["updates"]= "updates";
+	predicate["uses data from"]= "usesDataFrom";
+	predicate["uses method in"]= "usesMethodIn";
+	predicate["cites as data source"] = "citesAsDataSource"; 
+	predicate["cites as evidence"] = "citesAsEvidence"; 
+	predicate["cites as metadata document"] = "citesAsMetadataDocument"; 
+	predicate["cites as recommended reading"] = "citesAsRecommendedReading"; 
+	predicate["cites as related"] = "citesAsRelated"; 
+	predicate["cites as source document"] = "citesAsSourceDocument"; 
+	predicate["compiles"] = "compiles";   
+	predicate["confirms"] = "confirms";
+	predicate["contains assertion from"] = "containsAssertionFrom";
+
+	predicate["credits"] = "credits"; 
+	predicate["derides"] = "derides";   
+	predicate["disagrees with"] = "disagreesWith"; 
+	predicate["disputes"] = "disputes";   
+	predicate["documents"] = "documents"; 
+	predicate["gives background to"] = "givesBackgroundTo";   
+	predicate["gives support to"] = "givesSupportTo";  
+	predicate["has reply"] = "hasReply";
+	predicate["includes excerpt from"] = "includesExcerptFrom";   
+	predicate["includes quotation from"] = "includesQuotationFrom"; 
+	predicate["qualifies"] = "qualifies";   
+	predicate["refutes"] = "refutes";   
+	predicate["replies to"] = "repliesTo";   
+	predicate["retracts"] = "retracts";  
+	predicate["ridicules"] = "ridicules";   
+	predicate["shares authors with"] = "sharesAuthorsWith";   
+	predicate["supports"] = "supports"; 
+	predicate["uses conclusions from"] = "usesConclusionsFrom";
+
+	
+	return predicate;
+	
+}
+
+
+</script>
+
+
+</html>

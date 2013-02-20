@@ -1,6 +1,13 @@
 <?php
 include("./inc/dbconn.php");
 
+//http://stackoverflow.com/questions/298745/how-do-i-send-a-cross-domain-post-request-via-javascript
+    header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
+    header('Access-Control-Allow-Methods: GET');
+    header('Access-Control-Max-Age: 1000');
+    header('Access-Control-Allow-Headers: Content-Type');
+
+
 // PARAMETERS
 $subject = (isset($_REQUEST['subject'])) ? $_REQUEST['subject'] : "all";
 $userid = (isset($_REQUEST['userid'])) ? $_REQUEST['userid'] : "all";
