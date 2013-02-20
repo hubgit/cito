@@ -75,10 +75,7 @@ if ((in_array($new, $arrSubjects) == FALSE) && ($new != '')) {
 
 
 
-	
 
-
-//	print_r($arrSubjects);
 
 $arrObjects = array();
 
@@ -89,7 +86,6 @@ $subject = (preg_match("/^</", $subject) == 1) ? $subject : "<$subject>";
 
 $query = "http://www.miidi.org/cito/api/search?subject=" . $subject;
 
-//print "\n" . $query ;
 $result = file($query);	
 $size = count($result);	
 
@@ -117,8 +113,6 @@ foreach ($result as $line) {
 
 }}
 
-//print_r($arrObjects);
-
 
 
 
@@ -130,11 +124,9 @@ foreach ($arrObjects as $object=>$arrPredicate) {
 	
 	$predicate =   "<div class='subtitle'>How does $subject cite this article?</div><br/><ol>";
 	
-	//$predicate = "";
 	
 	foreach($arrPredicate as $pred){
-		//$predicate .= "<br/><a href='$subject'>$subject</a> &nbsp;&nbsp; <a href='$pred'>$pred</a> &nbsp;&nbsp <a href='$object'>$object</a>";
-
+		
 		$predicate .= "<li>$pred</li>";
 		
 	}
@@ -152,7 +144,6 @@ $children = getj($object, $counter * 100000000);
 
 $divider = ($cnt == count($arrObjects)) ? "" : ",";
 	
-$name = ".." . substr($object, -20);
 
 $json .= 
 <<<json
@@ -185,14 +176,6 @@ return $json;
 
 
 
-//$array2Output = array();
-
-//$output = getOutput($result);
-
-// CLOSE DATABASE
-//mysql_free_result($result);
-//mysql_close($con);
-
 ?>
 
 <?php
@@ -223,8 +206,7 @@ function getOutput($result){
 
 print_r($array2Output);
 
-        //  if ($cnt != $num_rows) { $output .= ",\n"; }
-        // $cnt +=1;
+       
         header('Content-type: application/json');
         print "{\n" . $output . "\n}" ;
 }
