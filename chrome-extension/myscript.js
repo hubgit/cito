@@ -68,7 +68,7 @@ function addEventListeners(){
 				 date = date.toUTCString()
 				
 
-				if (this.getAttribute('class') == 'tag'){
+				if (this.getAttribute('class') == 'cito-tag'){
 				var action = 'remove';	
 					save(this.getAttribute('id') , '0');
 				} else {
@@ -107,7 +107,7 @@ function spanCITO(arrCITO, obj){
 			  
 			  // treat 'OTHER REASON' differently - this will allow user to display/hide additional CiTO terms
 			  if (property == 'OTHER REASON') {
-				  var html = html + "<span id='otherreason' class='tag'  " +
+				  var html = html + "<span id='otherreason' class='cito-tag'  " +
 				  		"onClick='if (document.getElementById(&quot;otherReasons" + ref +"&quot;).className == \"otherReasonsDisplay\") {(document.getElementById(&quot;otherReasons" + ref + "&quot;).className=\"otherReasons\");} else if  ( document.getElementById(&quot;otherReasons" + ref + "&quot;).className == \"otherReasons\") { (document.getElementById(&quot;otherReasons" + ref + "&quot;).className = \"otherReasonsDisplay\");}'><div id='show-other' onClick='if (this.innerHTML == &quot;SHOW OTHER REASONS&quot;){this.innerHTML = &quot;HIDE OTHER REASONS&quot; } else {this.innerHTML= &quot;SHOW OTHER REASONS&quot;}'>SHOW OTHER REASONS</div>" +
 				  				"<span style='margin-left:180px;'>Click here to display or hide other reasons</span></span><br/>";	  
 				  
@@ -128,12 +128,12 @@ function spanCITO(arrCITO, obj){
 					 var isSet = localStorage.getItem(key);
 					 
 					if (isSet == '0') {
-						var cl = 'tag';
+						var cl = 'cito-tag';
 						
 					} else if (isSet == '1'){
 						var cl = 'tagSelected';
 					} else {
-						var cl = 'tag';
+						var cl = 'cito-tag';
 					}
 						 
 						 
@@ -141,7 +141,7 @@ function spanCITO(arrCITO, obj){
 					 
 					 
 					 
-					var html = html + "<span id='" + id + "' desc='"+ triple +"' class='" + cl + "' onClick='if (this.className == \"tagSelected\") {(this.className=\"tag\");} else if  ( this.className == \"tag\") { (this.className = \"tagSelected\");}'>" + property +  "<span>" + description + "</span></span><br/>";	  
+					var html = html + "<span id='" + id + "' desc='"+ triple +"' class='" + cl + "' onClick='if (this.className == \"tagSelected\") {(this.className=\"cito-tag\");} else if  ( this.className == \"cito-tag\") { (this.className = \"tagSelected\");}'>" + property +  "<span>" + description + "</span></span><br/>";	  
 		  
 					 
 				 

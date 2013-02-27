@@ -19,7 +19,7 @@ span.refTitleHelp {
 	font-weight: normal;
 }
 
-.tag {
+.cito-tag {
 	display: inline-block;
 	background-color: whitesmoke;
 	font-size: 11px;
@@ -30,7 +30,7 @@ span.refTitleHelp {
 	cursor: pointer;
 }
 
-.tag:hover {
+.cito-tag:hover {
 	background-color: #b8dbff;
 }
 
@@ -57,16 +57,16 @@ div.cito-annotate {
 	width:100%;
 }
 
-span.tag {
+span.cito-tag {
 	outline: none;
 
 }
 
-span.tag strong {
+span.cito-tag strong {
 	line-height: 30px;
 }
 
-span.tag:hover {
+span.cito-tag:hover {
 	text-decoration: none;
 }
 
@@ -97,7 +97,7 @@ span.tagSelected:hover {
 
 
 
-span.tag span {
+span.cito-tag span {
 	z-index: 10;
 	display: none;
 	padding: 14px 20px;
@@ -108,7 +108,7 @@ span.tag span {
 }
 
 /*CSS3 extras*/
-span.tag span {
+span.cito-tag span {
 	border-radius: 4px;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
@@ -139,7 +139,7 @@ span.tagSelected span {
 	box-shadow: 5px 5px 8px #CCC;
 }
 
-span.tag:hover span {
+span.cito-tag:hover span {
 	display: inline;
 	position: absolute;
 	color: green;
