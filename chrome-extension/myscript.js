@@ -261,6 +261,8 @@ function getObject4elife(el){
 			 	var obj = '""'; 
 		 }
 	 }
+
+	 return obj;
 }
 	
 // retrieve url or text citation for reference being cited
