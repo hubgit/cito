@@ -122,7 +122,7 @@ function spanCITO(arrCITO, obj){
 					 var triple =encodeURI(subject) + "|"  + encodeURI(pred) + "|" + encodeURI(object) ;
 					 var id = 'p' + cnt; // span id - used to store selection locally
 					 
-					 var key = window.location.href + id;
+					 var key = window.location.href.replace(/#.*/, "") + id;
 					 
 					 
 					 var isSet = localStorage.getItem(key);
