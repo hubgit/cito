@@ -662,6 +662,10 @@ function addHTML4peerj(){
 			html += "</tr></table></div></div>";
 			el[y].innerHTML +=  html;
 		}
+
+		// open references section
+		var heading = document.getElementById("article-item-references-text");
+		heading.click();
 	}
 }
 
