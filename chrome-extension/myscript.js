@@ -38,6 +38,10 @@ else if (url.match(/currents\.plos\.org/) != null){
 	addHTML4plos();
 	}
 	
+else if (url.match(/peerj\.com/) != null){
+	addHTML4peerj();
+}
+
 addEventListeners();
 
 
@@ -172,6 +176,9 @@ var object =		getObject4pubmed(obj);
 		var object = getObject4plos(obj);	
 		}
 	
+	else if (url.match(/peerj\.com/) != null){
+		var object = getObject4peerj(obj);
+	}
 	return object;
 	
 	
@@ -254,10 +261,22 @@ function getObject4elife(el){
 			 	var obj = '""'; 
 		 }
 	 }
+}
 	
-	return obj;
-	
-	
+// retrieve url or text citation for reference being cited
+function getObject4peerj(el){
+	var node = el.querySelector("a[itemprop=url][href^='http://dx.doi.org/']");
+
+	var obj = node ? "<" + node.getAttribute("href") + ">" : null;
+
+	if (!obj && el.innerText){
+		var text = el.innerText
+			.replace(/^\n*|\n*$/g, "")
+			.replace(/\s+/g, " ");
+		obj = '"'  + text + '"';
+	}
+
+	return obj ? obj : '""';
 }
 
 
@@ -618,9 +637,32 @@ function addHTML4elife(){
 	    	el[y].innerHTML +=  html;
 	    	
 	}}
+}
+	
+	
+function addHTML4peerj(){
+	var referenceList = document.getElementById("references");
 
-	
-	
+	if (referenceList) {
+		// insert link to allow user to download his/her annotations as a text file
+		referenceList.innerHTML = citoHeader() + referenceList.innerHTML;
+
+		// iterate through li tags in reference list
+		var el = referenceList.querySelectorAll(".citation");
+
+		for (var y = 0; y < el.length; y++){
+			var object = getObject(el[y]);
+			var html = html1;
+			ref += 1; // increment counter
+			html += spanCITO(arrCITO, el[y], object); // add CiTO terms
+			html += "</tr></table>";
+			html += "<div id='otherReasons" + ref +"' class='otherReasons'><span class='refTitle'>Other Reasons</span>" +
+					"<table  class='tblannotate'><tr>"; // alternative reasons
+			html += spanCITO(arrCITOother, el[y], object); // add CiTO for other reasons
+			html += "</tr></table></div></div>";
+			el[y].innerHTML +=  html;
+		}
+	}
 }
 
 

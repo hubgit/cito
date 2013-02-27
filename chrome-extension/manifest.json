@@ -11,7 +11,15 @@
   
   	"content_scripts": [
     {
-      "matches": ["http://europepmc.org/*", "http://www.ncbi.nlm.nih.gov/pmc/*", "http://elife.elifesciences.org/*", "https://elife.elifesciences.org/*", "http://www.ai-journal.com/*", "http://currents.plos.org/*"],
+      "matches": [
+        "http://europepmc.org/*",
+        "http://www.ncbi.nlm.nih.gov/pmc/*",
+        "http://elife.elifesciences.org/*",
+        "https://elife.elifesciences.org/*",
+        "http://www.ai-journal.com/*",
+        "http://currents.plos.org/*",
+        "https://peerj.com/articles/*"
+      ],
       "css": ["cito.css"],
       "js": ["myscript.js", "jquery.min.js"]
     }
